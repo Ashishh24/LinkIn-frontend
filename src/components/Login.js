@@ -32,6 +32,7 @@ const Login = () => {
                         <input type="text" value={password} className="border border-solid border-black px-1.5" onChange={(e) => setPassword(e.target.value)}/>
                     </div>
 
+
                     <div className="items-center text-center">
                         <button className="my-5 p-2 rounded-xl text-black border border-black cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogin}>Sign in</button>
                     </div>
