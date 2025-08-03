@@ -1,6 +1,17 @@
+import axios from "axios";
 import { logo } from "../utils/links";
 
 const Header = () => {
+
+    const handleLogout = async () => {
+        try {
+            const res = await axios("http://localhost:3000/logout");
+        }
+        catch(err){
+
+        }
+    }
+
     return (
         <div className="flex justify-between m-auto border-b-5">
             <img className="w-10 items-center" src={logo} />
@@ -9,7 +20,7 @@ const Header = () => {
                     <li className="mx-10 items-center">Home</li>
                     <li className="mx-10 items-center">Message</li>
                     <li className="mx-10 items-center">Profile</li>
-                    <li className="mx-10 border p-2 rounded-lg cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]">Login</li>
+                    <li className="mx-10 border p-2 rounded-lg cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogout}>Logout</li>
                 </ul>
             </div>
         </div>

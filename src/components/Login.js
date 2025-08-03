@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { ogLogo } from "../utils/links"
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("ashish@google.com");
+    const [password, setPassword] = useState("Password@123");
 
     const handleLogin = async () => {
         try{
             const res = await axios.post("http://localhost:3000/login", {
                 email, password
-            },{withCredentials: true});            
+            },{withCredentials: true});
         }
         catch(err){
             console.log(err.message);
@@ -34,7 +35,7 @@ const Login = () => {
 
 
                     <div className="items-center text-center">
-                        <button className="my-5 p-2 rounded-xl text-black border border-black cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogin}>Sign in</button>
+                        <button className="my-5 p-2 rounded-xl text-black border border-black cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogin}><Link to="/">Sign in</Link></button>
                     </div>
             </div>
         </div>
