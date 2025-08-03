@@ -20,7 +20,7 @@ const Login = () => {
     return (
         <div className="flex">
             <img className="h-[100vh]" src={ogLogo} />
-            <div className="m-auto h-50vh border border-black p-10 w-[20%] shadow-2xl">
+            <div className="m-auto h-50vh border border-black p-10 w-75 shadow-2xl">
                 <h1 className="text-center font-bold text-xl">Login to continue...</h1>
                     <div className="pt-5 flex flex-col">
                         <label>Email address</label>
