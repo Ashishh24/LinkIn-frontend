@@ -1,10 +1,11 @@
 import axios from "axios";
 import { logo } from "../utils/links";
 import { useState } from "react";
-import { Link, Navigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Header = () => {
     const [searchText, setSearchText] = useState("");
+    const navigate = useNavigate();
     
     const handleLogout = async () => {
         try {
@@ -17,12 +18,13 @@ const Header = () => {
 
     const handleSearch = (val) => {
         val.preventDefault();
-        if (!searchText.trim()) {
+        if (!searchText) {
             // Redirect if empty
-            <Navigate to="/add" />
+            // <Navigate to="/add" />
+            navigate("/add")
+            console.log("hello")
         } else {
             console.log("Search for:", searchText);
-            // navigate(`/results?query=${searchText}`);
         }
     }
 
@@ -52,7 +54,7 @@ const Header = () => {
             </div>
             <div className="w-[40%]">
                 <ul className="h-10 flex items-center ">
-                    <li className="mx-10 items-center">Home</li>
+                    <li className="mx-10 items-center cursor-pointer"><Link to="/">Home</Link></li>
                     <li className="mx-10 items-center">Message</li>
                     <li className="mx-10 items-center">Profile</li>
                     <li className="mx-10 border p-2 rounded-lg cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogout}>Logout</li>
