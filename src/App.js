@@ -5,11 +5,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Error from "./components/Error";
+import People from "./components/People";
+import AddConenction from "./components/AddConnection";
 
 const App = () => {
   return (
     <div>
-      <Login/>
+      <AddConenction/>
     </div>
   )
 }
@@ -27,6 +29,10 @@ const appRouter = createBrowserRouter([
   {
     path:"/signup",
     element: <Signup />,
+  },
+  {
+    path:"/add",
+    element: <AddConenction />,
   },
 ])
 
