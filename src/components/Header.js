@@ -2,20 +2,24 @@ import axios from "axios";
 import { logo } from "../utils/links";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 const Header = () => {
     const [searchText, setSearchText] = useState("");
     const navigate = useNavigate();
+
+    // const handleLogout = async () => {
+    //     try {
+    //         const res = await axios("http://localhost:3000/logout");
+    //     }
+    //     catch(err){
+
+    //     }
+    // }
+
+    const user = useSelector((store) => store.user);
+    console.log(user);
     
-    const handleLogout = async () => {
-        try {
-            const res = await axios("http://localhost:3000/logout");
-        }
-        catch(err){
-
-        }
-    }
-
     const handleSearch = (val) => {
         val.preventDefault();
         if (!searchText) {
@@ -56,8 +60,8 @@ const Header = () => {
                 <ul className="h-10 flex items-center ">
                     <li className="mx-10 items-center cursor-pointer"><Link to="/">Home</Link></li>
                     <li className="mx-10 items-center">Message</li>
-                    <li className="mx-10 items-center">Profile</li>
-                    <li className="mx-10 border p-2 rounded-lg cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogout}>Logout</li>
+                    <li className="mx-10 items-center">Welcome, {user.firstName} </li>
+                    {/* <li className="mx-10 border p-2 rounded-lg cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogout}>Logout</li> */}
                 </ul>
             </div>
         </div>
