@@ -7,13 +7,16 @@ import Login from "./components/Login";
 import Error from "./components/Error";
 import People from "./components/People";
 import AddConenction from "./components/AddConnection";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import appStore from "./utils/appStore";
+import User from "./components/User";
 
 const App = () => {
+  
   return (
     <Provider store={appStore}>
       <div>
+        <User />
         <Outlet />
       </div>
     </Provider>
