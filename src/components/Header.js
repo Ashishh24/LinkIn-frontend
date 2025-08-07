@@ -17,13 +17,15 @@ const Header = () => {
 
     const handleLogout = async () => {
         try {
-            const res = await axios(BASE_URL+"/logout");
+            // const res = await axios(BASE_URL+"/logout", {}, {
+            //     withCredentails: true
+            // });
             dispatch(removeUser());
-            alert("You have been successfully logged out")
+            // alert("You have been successfully logged out 👍")
             navigate("/login");
         }
         catch(err){
-
+            console.log(err.message);
         }
     }
 
@@ -38,35 +40,8 @@ const Header = () => {
         }
     }
 
-    let user;
-    // user = useSelector((store) => store.user);
-    user = {
-        firstName: "Ashish",
-        lastName: "Anand",
-        email: "ashish@google.com",
-        profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
-    }
+    const user = useSelector((store) => store.user);
     // console.log(user);
-
-    useEffect(() => {
-        if (!user) {
-            alert("You are not logged in. Please login first")
-            navigate("/login");
-        }
-    }, [user, navigate]);
-
-    // Close dropdown when clicking outside
-    // useEffect(() => {
-    //     function handleClickOutside(event) {
-    //         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-    //             setDropdownOpen(false);
-    //         }
-    //     }
-    //     document.addEventListener("mousedown", handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-    // }, []);    
 
     if (!user) return null;
 
@@ -154,27 +129,3 @@ const Header = () => {
 };
 
 export default Header;
-
-{/* 
-<div className="w-[40%] flex items-center">
-    <ul className="h-10 flex items-center ">
-        <li className="mx-10 items-center cursor-pointer"><Link to="/">Home</Link></li>
-        <li className="mx-10 items-center">Message</li>
-        <li className="mx-10 items-center">Welcome, {user.firstName} </li>
-    </ul>
-    <div className="relative">
-        <img src={user.profilePhoto} className="rounded-full h-[60px]" onClick={() => setDropdownOpen((prev) => !prev)} />
-        { dropdownOpen &&
-            <div ref={dropdownRef} className="absolute right-0 w-40 border border-[#ccc] bg-white shadow-lg rounded-md z-50">
-                <button onClick={() => navigate("/profile")} className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer" >
-                    View Profile
-                </button>
-                <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer" >
-                    Sign Out
-                </button>
-                {/* <li className="mx-10 border p-2 rounded-lg cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogout}>Logout</li>  }
-            </div>
-        }
-    </div>
-</div> 
-*/}

@@ -1,0 +1,16 @@
+POST - /signup
+POST - /login
+POST - /logout
+
+GET - /profile/view
+GET - /profile/view/:userID
+PATCH - /profile/edit
+PATCH - /profile/changePassword
+DELETE - 
+
+POST - /request/send/:status/:userID
+POST - /request/review/:status/:requestID
+
+GET - /user/connectionRequest
+GET - /user/connections
+GET - /user/feed

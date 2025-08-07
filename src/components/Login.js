@@ -12,12 +12,23 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    
+
+
     const handleLogin = async () => {
         try{
-            const res = await axios.post(BASE_URL+"/login", {
-                email, password
-            }, { withCredentials: true });
-            dispatch(addUser(res.body));
+            // const res = await axios.post(BASE_URL+"/login", {
+            //     email, password
+            // }, { withCredentials: true });
+            // dispatch(addUser(res.body));
+            /**DUMMY USER FOR TEST PURPOSE, WILL REMOVE WHEN MAKE LIVE - 25-31*/
+            const user = {
+                firstName: "Ashish",
+                lastName: "Anand",
+                email: "ashish@google.com",
+                profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
+            }
+            dispatch(addUser(user));
             navigate("/");
         }
         catch(err){
