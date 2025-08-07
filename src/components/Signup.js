@@ -1,6 +1,8 @@
 import axios from "axios";
 import { ogLogo } from "../utils/links";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/url";
 
 
 const Signup = () => {
@@ -8,11 +10,16 @@ const Signup = () => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleSignup = async() => {
-        const res = await axios.post("http://localhost:3000/signup", {
+        const res = await axios.post(BASE_URL+"/signup", {
             firstName, lastName, email, password
         });
+    }
+
+    const handleAlready = () => {
+        navigate("/login");
     }
 
     return (
@@ -32,22 +39,24 @@ const Signup = () => {
                         </div>
                     </div>
                     
-                    {/* <div className="pt-5 flex flex-col">
-                        <label>Date of Birth</label>
-                        <input type="date" className="border border-solid border-black px-1.5"/>
-                    </div>
+                    <div>
+                        {/* <div className="pt-5 flex flex-col">
+                            <label>Date of Birth</label>
+                            <input type="date" className="border border-solid border-black px-1.5"/>
+                        </div>
 
-                    <div className="pt-5 flex flex-col">
-                        <label>Gender</label>
-                        <div className="flex gap-3">
-                        <input type="radio" name="gender" value="male"/>
-                        <label>Male</label><br/>
-                        </div>
-                        <div className="flex gap-3">
-                        <input type="radio" name="gender" value="female"/>
-                        <label>Female</label><br/>
-                        </div>
-                    </div> */}
+                        <div className="pt-5 flex flex-col">
+                            <label>Gender</label>
+                            <div className="flex gap-3">
+                            <input type="radio" name="gender" value="male"/>
+                            <label>Male</label><br/>
+                            </div>
+                            <div className="flex gap-3">
+                            <input type="radio" name="gender" value="female"/>
+                            <label>Female</label><br/>
+                            </div>
+                        </div> */}
+                    </div>
 
                     <div className="pt-5 flex flex-col">
                         <label>Email address</label>
@@ -58,19 +67,22 @@ const Signup = () => {
                         <label>Password</label>
                         <input value={password} className="border border-solid border-black px-1.5" onChange={(e) => setPassword(e.target.value)}/>
                     </div>
+                    
+                    <div>
+                        {/* <div className="pt-5 flex flex-col">
+                            <label>Phone Number</label>
+                            <input type="tel" className="border border-solid border-black"/>
+                        </div>
 
-                    {/* <div className="pt-5 flex flex-col">
-                        <label>Phone Number</label>
-                        <input type="tel" className="border border-solid border-black"/>
-                    </div> */}
-
-                    {/* <div className="pt-5 flex flex-col">
-                        <label>Profile Photo</label>
-                        <input className="border border-solid"/>
-                    </div> */}
+                        <div className="pt-5 flex flex-col">
+                            <label>Profile Photo</label>
+                            <input className="border border-solid"/>
+                        </div> */}
+                    </div>
 
                     <div className="items-center text-center">
                         <button className="my-5 p-2 rounded-xl text-black border border-black cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleSignup}>Register</button>
+                        <p onClick={handleAlready} className="cursor-pointer">Already have an account ? Login</p>
                     </div>
                 </div>
             </div>

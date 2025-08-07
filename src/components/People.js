@@ -1,5 +1,5 @@
 const People = (props) => {
-    console.log("propssss", props);
+    // console.log("propssss", props);
     
     const {firstName, lastName, bio, profilePhoto} = props.data;
 

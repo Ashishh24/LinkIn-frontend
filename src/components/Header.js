@@ -1,36 +1,74 @@
 import axios from "axios";
 import { logo } from "../utils/links";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "../../src/utils/userSlice.js";
+import { BASE_URL } from "../utils/url.js";
 
 const Header = () => {
     const [searchText, setSearchText] = useState("");
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const dropdownRef = useRef(null); 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    // const handleLogout = async () => {
-    //     try {
-    //         const res = await axios("http://localhost:3000/logout");
-    //     }
-    //     catch(err){
+    const handleLogout = async () => {
+        try {
+            const res = await axios(BASE_URL+"/logout");
+            dispatch(removeUser());
+            alert("You have been successfully logged out")
+            navigate("/login");
+        }
+        catch(err){
 
-    //     }
-    // }
+        }
+    }
 
-    const user = useSelector((store) => store.user);
-    console.log(user);
-    
     const handleSearch = (val) => {
         val.preventDefault();
         if (!searchText) {
             // Redirect if empty
-            // <Navigate to="/add" />
             navigate("/add")
             console.log("hello")
         } else {
             console.log("Search for:", searchText);
         }
     }
+
+    let user;
+    // user = useSelector((store) => store.user);
+    user = {
+        firstName: "Ashish",
+        lastName: "Anand",
+        email: "ashish@google.com",
+        profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
+    }
+    // console.log(user);
+
+    useEffect(() => {
+        if (!user) {
+            alert("You are not logged in. Please login first")
+            navigate("/login");
+        }
+    }, [user, navigate]);
+
+    // Close dropdown when clicking outside
+    // useEffect(() => {
+    //     function handleClickOutside(event) {
+    //         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    //             setDropdownOpen(false);
+    //         }
+    //     }
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, []);    
+
+    if (!user) return null;
 
     return (
         <div className="flex h-20 items-center justify-between m-auto dark:bg-gray-950 dark:text-white">
@@ -56,16 +94,87 @@ const Header = () => {
                     </form>
                 </div>
             </div>
-            <div className="w-[40%]">
-                <ul className="h-10 flex items-center ">
-                    <li className="mx-10 items-center cursor-pointer"><Link to="/">Home</Link></li>
+
+            {/* Right section */}
+            <div className="w-[40%] flex justify-center items-center">
+                {/* Desktop Menu */}
+                <ul className="hidden md:flex items-center space-x-6">
+                    <li className="mx-10 items-center"><Link to="/">Home</Link></li>
                     <li className="mx-10 items-center">Message</li>
-                    <li className="mx-10 items-center">Welcome, {user.firstName} </li>
-                    {/* <li className="mx-10 border p-2 rounded-lg cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogout}>Logout</li> */}
+                    <li className="mx-10 items-center">Welcome, {user.firstName}</li>
                 </ul>
+
+                {/* Profile Dropdown */}
+                <div className="relative ml-4 hidden md:block">
+                    <button onClick={() => setDropdownOpen(!dropdownOpen)}>
+                        <img
+                            src={user.profilePhoto}
+                            className="rounded-full h-[50px] w-[50px] object-cover cursor-pointer"
+                            // onClick={() => setDropdownOpen((prev) => !prev)}
+                        />
+                    </button>
+                    { dropdownOpen && (
+                        <div ref={dropdownRef} className="absolute right-0 w-40 border bg-white shadow-lg rounded-md z-50 text-black">
+                            <button onClick={() => navigate("/profile")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                View Profile
+                            </button>
+                            <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                Sign Out
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {/* Mobile menu */}
+                <div className="md:hidden ml-4 relative">
+                    <button onClick={() => setMenuOpen(!menuOpen)}>
+                        <img
+                            src={user.profilePhoto}
+                            className="rounded-full h-[50px] w-[50px] object-cover cursor-pointer"
+                            // onClick={() => setDropdownOpen((prev) => !prev)}
+                        />
+                    </button>
+                    { menuOpen && (
+                        <div ref={dropdownRef} className="absolute right-0 top-10 w-48 border bg-white shadow-lg rounded-md z-50 text-black" >
+                            <Link to="/" className="block px-4 py-2 hover:bg-gray-100">Home</Link>
+                            <div className="block px-4 py-2">Message</div>
+                            {/* <div className="block px-4 py-2">Welcome, {user.firstName}</div> */}
+                            <button onClick={() => navigate("/profile")} className="cursor-pointer block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                View Profile
+                            </button>
+                            <button onClick={handleLogout} className="cursor-pointer block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                Sign Out
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     )
 };
 
 export default Header;
+
+{/* 
+<div className="w-[40%] flex items-center">
+    <ul className="h-10 flex items-center ">
+        <li className="mx-10 items-center cursor-pointer"><Link to="/">Home</Link></li>
+        <li className="mx-10 items-center">Message</li>
+        <li className="mx-10 items-center">Welcome, {user.firstName} </li>
+    </ul>
+    <div className="relative">
+        <img src={user.profilePhoto} className="rounded-full h-[60px]" onClick={() => setDropdownOpen((prev) => !prev)} />
+        { dropdownOpen &&
+            <div ref={dropdownRef} className="absolute right-0 w-40 border border-[#ccc] bg-white shadow-lg rounded-md z-50">
+                <button onClick={() => navigate("/profile")} className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer" >
+                    View Profile
+                </button>
+                <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer" >
+                    Sign Out
+                </button>
+                {/* <li className="mx-10 border p-2 rounded-lg cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogout}>Logout</li>  }
+            </div>
+        }
+    </div>
+</div> 
+*/}

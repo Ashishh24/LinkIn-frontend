@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "./Header";
 import People from "./People";
+import { BASE_URL } from "../utils/url.js";
 
 const AddConenction = () => {
     const data = [
@@ -14,7 +15,7 @@ const AddConenction = () => {
     // const [people, setPeople] = useState()
     // const newPeople = async () => {
     //     try {
-    //         // const data = await axios.get("http://localhost:3000/user/feed");
+    //         // const data = await axios.get(BASE_URL+"/user/feed");
     //         // const json = await data.json();
     //         setPeople(json);
     //     }
