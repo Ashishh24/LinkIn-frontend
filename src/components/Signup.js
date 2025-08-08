@@ -10,6 +10,12 @@ const Signup = () => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [gender, setGender] = useState("");
+    const [phone, setPhone] = useState("");
+    const [profilePhoto, setProfilePhoto] = useState("");
+    const [about, setAbout] = useState("");
+    const [skills, setSkills] = useState("");
+    
     const navigate = useNavigate();
 
     const handleSignup = async() => {

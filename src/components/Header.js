@@ -124,7 +124,11 @@ const Header = () => {
                     )}
                 </div>
             </div>
+            <div>
+                <button className="border rounded-xl"> <Link to="/edit"> EditProfile</Link></button>
+            </div>
         </div>
+        
     )
 };
 

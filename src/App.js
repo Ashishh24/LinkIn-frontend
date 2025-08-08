@@ -10,6 +10,8 @@ import AddConenction from "./components/AddConnection";
 import { Provider, useDispatch } from "react-redux";
 import appStore from "./utils/appStore";
 import User from "./components/User";
+import Profile from "./components/Profile";
+import EditProfile from "./components/EditProfile";
 
 const App = () => {
   
@@ -45,6 +47,14 @@ const appRouter = createBrowserRouter([
       {
         path:"/add",
         element: <AddConenction />,
+      },
+      {
+        path:"/profile",
+        element: <Profile />,
+      },
+      {
+        path:"/edit",
+        element: <EditProfile />,
       },
     ]
   }
