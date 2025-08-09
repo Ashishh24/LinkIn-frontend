@@ -1,35 +1,26 @@
 import { useState } from "react";
 import { ogLogo } from "../utils/links"
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { BASE_URL } from "../utils/url";
 import toast from "react-hot-toast";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("ashish@google.com");
+    const [password, setPassword] = useState("Password@123");
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    
-
-
     const handleLogin = async () => {
         try{
-            // const res = await axios.post(BASE_URL+"/login", {
-            //     email, password
-            // }, { withCredentials: true });
-            // dispatch(addUser(res.body));
-            /**DUMMY USER FOR TEST PURPOSE, WILL REMOVE WHEN MAKE LIVE - 25-31*/
-            const user = {
-                firstName: "Ashish",
-                lastName: "Anand",
-                email: "ashish@google.com",
-                profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
-            }
-            dispatch(addUser(user));
+            const res = await axios.post(BASE_URL+"login", {
+                email, password
+            }, { withCredentials: true });
+            console.log(res);
+            console.log(res.data);
+            dispatch(addUser(res.data));
             toast.success("Login successful!");
             navigate("/");
         }
@@ -59,7 +50,7 @@ const Login = () => {
 
 
                     <div className="items-center text-center">
-                        <button className="my-5 p-2 rounded-xl text-black border border-black cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogin}><Link to="/">Sign in</Link></button>
+                        <button className="my-5 p-2 rounded-xl text-black border border-black cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogin}>Sign in</button>
                         <p onClick={handleNoAccount} className="cursor-pointer">Don't have an account yet? Signup</p>
                     </div>
             </div>

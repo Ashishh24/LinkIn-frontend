@@ -20,7 +20,7 @@ const Signup = () => {
 
     const handleSignup = async() => {
         try{
-            const res = await axios.post(BASE_URL+"/signup", {
+            const res = await axios.post(BASE_URL+"signup", {
                 firstName, lastName, email, password
             });
         }

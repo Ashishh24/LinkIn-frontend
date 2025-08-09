@@ -4,17 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { updateUser } from "../utils/userSlice";
 import toast from "react-hot-toast";
 import { BASE_URL } from "../utils/url";
+import axios from "axios";
 
 const EditProfile = () => {
 
-    // const userData = useSelector(store => store.user);
-    const userData = {
-        firstName: "Ashish",
-        lastName: "Anand",
-        email: "ashish@google.com",
-        profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
-        phone: ""
-    }
+    const userData = useSelector(store => store.user);
+    // const userData = {
+    //     firstName: "Ashish",
+    //     lastName: "Anand",
+    //     email: "ashish@google.com",
+    //     profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
+    //     phone: ""
+    // }
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
@@ -31,10 +32,10 @@ const EditProfile = () => {
     const fetchUser = async() => {
         if(userData) return;
         try {
-            // const user = await axios.get(BASE_URL+"/profile/view", {
-            //     withCredentials: true,
-            // });
-            // dispatch(addUser(user));
+            const user = await axios.get(BASE_URL+"profile/view", {
+                withCredentials: true,
+            });
+            dispatch(addUser(user));
         }
         catch(err) {
             if (err.status == 401) {

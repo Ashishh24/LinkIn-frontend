@@ -7,20 +7,18 @@ import Login from "./components/Login";
 import Error from "./components/Error";
 import People from "./components/People";
 import AddConenction from "./components/AddConnection";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 import User from "./components/User";
 import Profile from "./components/Profile";
 import EditProfile from "./components/EditProfile";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
-
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
   
   return (
-    // <Toaster position="top-right" reverseOrder={false} />
     <Provider store={appStore}>
       <Toaster position="top-center" reverseOrder={false} />
       <div>

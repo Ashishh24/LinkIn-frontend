@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../../src/utils/userSlice.js";
 import { BASE_URL } from "../utils/url.js";
 import toast from "react-hot-toast";
+import { clearConnections } from "../utils/connectionSlice.js";
+import { clearRequests } from "../utils/requestSlice";
+import { clearFeed } from "../utils/feedSlice.js";
 
 const Header = () => {
     const [searchText, setSearchText] = useState("");
@@ -18,10 +21,13 @@ const Header = () => {
 
     const handleLogout = async () => {
         try {
-            // const res = await axios(BASE_URL+"/logout", {}, {
-            //     withCredentails: true
-            // });
+            const res = await axios.post(BASE_URL+"logout", {}, {
+                withCredentails: true
+            });
             dispatch(removeUser());
+            dispatch(clearFeed());
+            dispatch(clearConnections());
+            dispatch(clearRequests());
             toast.success("You have been successfully logged out 👍");
             navigate("/login");
         }
@@ -34,9 +40,7 @@ const Header = () => {
     const handleSearch = (val) => {
         val.preventDefault();
         if (!searchText) {
-            // Redirect if empty
             navigate("/add")
-            console.log("hello")
         } else {
             console.log("Search for:", searchText);
         }
@@ -54,10 +58,6 @@ const Header = () => {
                     <Link to="/"><img className="w-15 mx-auto" src={logo} ></img></Link>
                 </div>
                 <div className="w-[67%] flex items-center">
-                    {/* search bar */}
-                    {/* <input className="flex w-75 p-2 border border-solid border-[#ccc] rounded-md" type="search" name="q" placeholder="Search..." autoComplete="off" value={searchText} onChange={(e) => {
-                        setSearchText(e.target.value);
-                    }}/> */}
                     <form  onSubmit={handleSearch} className="max-w-md mx-auto w-full ">   
                         <div className="relative">
                             <div className="absolute inset-y-0 flex items-center ps-3 ">
@@ -77,7 +77,7 @@ const Header = () => {
                 {/* Desktop Menu */}
                 <ul className="hidden md:flex items-center space-x-6">
                     <li className="mx-10 items-center"><Link to="/">Home</Link></li>
-                    <li className="mx-10 items-center">Message</li>
+                    <li className="mx-10 items-center"><Link to="/requests">New Requets</Link></li>
                     <li className="mx-10 items-center">Welcome, {user.firstName}</li>
                 </ul>
 
@@ -87,11 +87,13 @@ const Header = () => {
                         <img
                             src={user.profilePhoto}
                             className="rounded-full h-[50px] w-[50px] object-cover cursor-pointer"
-                            // onClick={() => setDropdownOpen((prev) => !prev)}
                         />
                     </button>
                     { dropdownOpen && (
                         <div ref={dropdownRef} className="absolute right-0 w-40 border bg-white shadow-lg rounded-md z-50 text-black">
+                            <button onClick={() => navigate("/connections")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                Connections
+                            </button>
                             <button onClick={() => navigate("/profile")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 View Profile
                             </button>
@@ -108,14 +110,15 @@ const Header = () => {
                         <img
                             src={user.profilePhoto}
                             className="rounded-full h-[50px] w-[50px] object-cover cursor-pointer"
-                            // onClick={() => setDropdownOpen((prev) => !prev)}
                         />
                     </button>
                     { menuOpen && (
                         <div ref={dropdownRef} className="absolute right-0 top-10 w-48 border bg-white shadow-lg rounded-md z-50 text-black" >
                             <Link to="/" className="block px-4 py-2 hover:bg-gray-100">Home</Link>
-                            <div className="block px-4 py-2">Message</div>
-                            {/* <div className="block px-4 py-2">Welcome, {user.firstName}</div> */}
+                            <div className="block px-4 py-2"><Link to="/requets">New Requests</Link></div>
+                            <button onClick={() => navigate("/connections")} className="cursor-pointer block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                Connections
+                            </button>
                             <button onClick={() => navigate("/profile")} className="cursor-pointer block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 View Profile
                             </button>

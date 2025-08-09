@@ -3,28 +3,28 @@ import Header from "./Header";
 import People from "./People";
 import { BASE_URL } from "../utils/url.js";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../utils/requestSlice.js";
+import { addRequest, removeRequest } from "../utils/requestSlice.js";
+import axios from "axios";
 
 const Requests = () => {
     const requests = useSelector((store) => store.requests);
-    console.log("requests1", requests);
     
-    const data = [
-        {_id: 1, firstName: "Madhu", lastName: "Ray", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
-        {_id: 2, firstName: "Sonal", lastName: "Jha", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
-        {_id: 3, firstName: "Akshita", lastName: "Jha", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
-    ]
+    // const data = [
+    //     {_id: 1, firstName: "Madhu", lastName: "Ray", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
+    //     {_id: 2, firstName: "Sonal", lastName: "Jha", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
+    //     {_id: 3, firstName: "Akshita", lastName: "Jha", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
+    // ]
 
     const dispatch = useDispatch();
     
     const requestsData = async () => {
         if(requests) return;
         try {
-            // const res = await axios.get(BASE_URL+"/user/connectionRequest", {
-            //     withCredentials: true,
-            // });
-            // dispatch(addRequests(res.data));
-            dispatch(addRequests(data));
+            const res = await axios.get(BASE_URL+"user/connectionRequest", {
+                withCredentials: true,
+            });
+            dispatch(addRequest(res.data.data));
+            // dispatch(addRequest(data));
         }
         catch(err) {
             console.log(err.message);
@@ -33,16 +33,63 @@ const Requests = () => {
 
     useEffect(() => {
         requestsData();
-    }, [])
+    }, []);
+
+    const handleConnect = async(_id, status) => {
+        try{
+            console.log(status, _id);
+            const res = await axios.patch(BASE_URL+"request/review/" + status + "/" + _id, {}, {
+                withCredentials: true,
+            })
+            dispatch(removeRequest(_id));
+        }
+        catch(err){
+            console.log(err.message);
+            
+        }
+    }
+
+    if(!requests) return;
+
+    if(requests.length === 0) return (<h1>No Request found!!</h1>)
+
 
     return (
         <div>
             <Header />
             {requests && <div>
-                {requests.map((p) => {
-                    //still require modification!!       
-                    return <People key={p._id} data={p}/>
-                    // for real data (to correct after checking from db)
+                {requests.map((request) => {
+                    // return <RequestPeople key={p._id} data={p}/>
+                    console.log(request);
+                    const {_id} = request 
+                    const { firstName, lastName, bio, profilePhoto} = request.fromUserID;
+
+                    return (
+                        <div key={_id} className="flex bg-base-200 border border-[#ccc] w-[50%] align-middle text-center p-5 mx-auto mt-5 dark:bg-gray-700 dark:border-gray-600">
+                            {/*profile photo*/}
+                            <div className="w-[15%]">
+                                <img className="w-20 rounded-full border-black" src={profilePhoto} />
+                            </div> 
+                            <div className="flex w-[90%] items-center">
+                                <div className="w-[90%]">
+                                    <div className="flex space-x-2 text-xl">
+                                        {firstName + " " + lastName}
+                                    </div>
+                                    <div className="text-left">
+                                        {bio}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex gap-4">
+                                        <button onClick={() => handleConnect(_id,"reject")} className="border rounded-3xl border-[#ccc] py-2 px-7 cursor-pointer hover:bg-red-500 hover:text-white">Reject</button>
+                                        <button onClick={() => handleConnect(_id,"accept")} className="border rounded-3xl border-[#ccc] py-2 px-7 cursor-pointer hover:bg-[#2E78B6] hover:text-white">Accept</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+
+
                 })}
             </div>}
             {/* <People /> */}
