@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../../src/utils/userSlice.js";
 import { BASE_URL } from "../utils/url.js";
+import toast from "react-hot-toast";
 
 const Header = () => {
     const [searchText, setSearchText] = useState("");
@@ -21,10 +22,11 @@ const Header = () => {
             //     withCredentails: true
             // });
             dispatch(removeUser());
-            // alert("You have been successfully logged out 👍")
+            toast.success("You have been successfully logged out 👍");
             navigate("/login");
         }
         catch(err){
+            toast.error("Logout failed :(")
             console.log(err.message);
         }
     }
@@ -123,9 +125,6 @@ const Header = () => {
                         </div>
                     )}
                 </div>
-            </div>
-            <div>
-                <button className="border rounded-xl"> <Link to="/edit"> EditProfile</Link></button>
             </div>
         </div>
         

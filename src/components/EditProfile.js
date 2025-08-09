@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateUser } from "../utils/userSlice";
+import toast from "react-hot-toast";
+import { BASE_URL } from "../utils/url";
 
 const EditProfile = () => {
 
     // const userData = useSelector(store => store.user);
-    // let user;
-
     const userData = {
         firstName: "Ashish",
         lastName: "Anand",
@@ -15,6 +15,18 @@ const EditProfile = () => {
         profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
         phone: ""
     }
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const fileInputRef = useRef(null);
+
+    const [firstName, setFirstName] = useState(userData?.firstName || "");
+    const [lastName, setLastName] = useState(userData?.lastName || "");
+    const [gender, setGender] = useState(userData?.gender || "");
+    const [phone, setPhone] = useState(userData?.phone || "");
+    const [profilePhoto, setProfilePhoto] = useState(userData.profilePhoto);
+    const [about, setAbout] = useState(userData?.about || "");
+    // const [skills, setSkills] = useState(userData.skills);
+
 
     const fetchUser = async() => {
         if(userData) return;
@@ -22,15 +34,6 @@ const EditProfile = () => {
             // const user = await axios.get(BASE_URL+"/profile/view", {
             //     withCredentials: true,
             // });
-
-            /** DUMMY USER FOR TEST PURPOSE, WILL REMOVE WHEN MAKE LIVE */
-            // const user = {
-            //     firstName: "Ashish",
-            //     lastName: "Anand",
-            //     email: "ashish@google.com",
-            //     profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
-            //     phone: ""
-            // }
             // dispatch(addUser(user));
         }
         catch(err) {
@@ -46,68 +49,48 @@ const EditProfile = () => {
 
     useEffect(() => {
         fetchUser();
-    }, [])
+    }, []);
+
+    const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     
-
-
-    // const userData = useSelector(store => store.user)
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const [firstName, setFirstName] = useState(userData?.firstName || "");
-    const [lastName, setLastName] = useState(userData?.lastName || "");
-    const [gender, setGender] = useState(userData?.gender || "");
-    const [phone, setPhone] = useState(userData?.phone || "");
-    const [profilePhoto, setProfilePhoto] = useState(userData.profilePhoto);
-    const [about, setAbout] = useState(userData?.about || "");
-    // const [skills, setSkills] = useState(userData.skills);        
-
     const handleSubmit = (e) => {
-        e.preventDefault();
         dispatch(updateUser({            
-            firstName: firstName,
-            lastName: lastName,
+            firstName: capitalizeFirstLetter(firstName),
+            lastName: capitalizeFirstLetter(lastName),
             gender: gender,
             phone: phone,
             profilePhoto: profilePhoto,
             about: about,
-            // skills: firstName,
+            // skills: skills,
         }));
-        alert("Profile updated successfully!!")
-        navigate("/");
+        toast.success("Profile updated successfully!");
+        navigate("/profile");
     }
 
-    const [previewURL, setPreviewURL] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-
+    const cancelButton = () => {
+        navigate("/profile");
+    }
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const preview = URL.createObjectURL(file);
-            setPreviewURL(preview);
+        const previewURL = URL.createObjectURL(file);
+        setProfilePhoto(previewURL);
         }
-    };
-
-    const handleSave = () => {
-        if (previewURL) {
-            setProfilePhoto(previewURL);
-        }
-        setShowModal(false);
     };
 
     return (
         <div>
             <section className="bg-white dark:bg-gray-900">
                 {/* HEADER */}
-                <div className="text-center my-5">
+                <div className="text-center py-5">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Edit Profile</h2>
                 </div>
                 
                 {/* EDIT DATA */}
-                <div className="w-[80%] py-8 my-3 mx-auto  lg:py-8 flex">
-                    <div className="w-[70%] md:w-[70%] px-5 border-r-1 border-[#ccc]">
-                        <form onSubmit={handleSubmit}>
+                <div className="w-[100%] md:w-[80%] py-8 my-3 mx-auto lg:py-8 flex">
+                    <div className="w-[60%] md:w-[70%] px-5 border-r-1 border-[#ccc]">
+                        <form>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                                 <div className="sm:col-span-2">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
@@ -122,8 +105,9 @@ const EditProfile = () => {
                                     <select id="category"  value={gender}
                                         onChange={(e) => {
                                             const selectedGender = e.target.value;
-                                            setGender(selectedGender); // Update local state
+                                            setGender(selectedGender);
                                         }} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option defaultValue="Choose">Choose Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="No">Prefer not to say</option>
@@ -155,65 +139,35 @@ const EditProfile = () => {
                         </form>
                     </div>
 
-{/******************** NEED MORE MODIFICATION */}
-                    <div className="p-6">
+                    <div className="w-[40%] p-6">
                         <div className="mb-4">
-                            <div className="max-w-96 max-h-96 rounded-full overflow-hidden border shadow">
+                            <div className="aspect-square rounded-full overflow-hidden border shadow">
                                 <img src={profilePhoto} className="w-full h-full object-cover"/>
-                            </div>                            
+                            </div>       
+                            
+                            {/* Hidden file input */}
+                            <input
+                                type="file"
+                                accept="image/*"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                style={{ display: "none" }}
+                            />                     
                             <button
-                                onClick={() => setShowModal(true)}
-                                className="mt-2 p-3 border float-end rounded-full text-sm cursor-pointer hover:bg-blue-500 hover:text-white">
+                                onClick={() => fileInputRef.current.click()}
+                                className="mt-2 p-3 border float-end rounded-full text-sm cursor-pointer hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-blue-800">
                                 Change Image
                             </button>
                         </div>
-
-                        {/* Modal */}
-                        {showModal && (
-                            <div className="fixed inset-0 flex items-center justify-center  bg-opacity-50 backdrop-blur-sm z-50">
-                                <div className="bg-white p-6 rounded-lg w-80 border">
-                                    <h2 className="text-lg font-semibold mb-4">Select New Image</h2>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleFileChange}
-                                        className="mb-4"
-                                    />
-
-                                    {previewURL && (
-                                    <img
-                                        src={previewURL}
-                                        alt="Preview"
-                                        className="w-32 h-32 object-cover rounded mb-4"
-                                    />
-                                    )}
-
-                                    <div className="flex justify-end gap-2">
-                                    <button
-                                        onClick={() => setShowModal(false)}
-                                        className="px-4 py-2 text-sm bg-gray-200 rounded"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        onClick={handleSave}
-                                        className="px-4 py-2 text-sm bg-blue-600 text-white rounded"
-                                    >
-                                        Save
-                                    </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </div>
                 
                 {/* SUBMIT/CANCEL BUTTON */}
-                <div className="flex justify-center space-x-4">
-                    <button className="border rounded-xl px-3 py-2 cursor-pointer dark:text-white dark:border-white hover:bg-blue-500 hover:text-white">
+                <div className="flex justify-center space-x-4 pb-4">
+                    <button onClick={handleSubmit} className="border rounded-xl px-3 py-2 cursor-pointer dark:text-white dark:border-white hover:bg-blue-500 hover:text-white dark:hover:bg-blue-800">
                         Update Profile
                     </button>
-                    <button className="border rounded-xl px-3 py-2 cursor-pointer dark:text-white dark:border-white hover:bg-red-600 hover:text-white">
+                    <button onClick={cancelButton} className="border rounded-xl px-3 py-2 cursor-pointer dark:text-white dark:border-white hover:bg-red-600 hover:text-white dark:hover:bg-red-900">
                         Cancel
                     </button>
                 </div>

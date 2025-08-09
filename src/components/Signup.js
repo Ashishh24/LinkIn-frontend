@@ -19,9 +19,14 @@ const Signup = () => {
     const navigate = useNavigate();
 
     const handleSignup = async() => {
-        const res = await axios.post(BASE_URL+"/signup", {
-            firstName, lastName, email, password
-        });
+        try{
+            const res = await axios.post(BASE_URL+"/signup", {
+                firstName, lastName, email, password
+            });
+        }
+        catch (err) {
+            console.log(err.message);
+        }
     }
 
     const handleAlready = () => {
