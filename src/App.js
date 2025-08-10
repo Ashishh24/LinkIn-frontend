@@ -15,6 +15,7 @@ import EditProfile from "./components/EditProfile";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 import { Toaster } from "react-hot-toast";
+import Entry from "./components/Entry";
 
 const App = () => {
   
@@ -37,6 +38,11 @@ const appRouter = createBrowserRouter([
     [
       {
         path:"/",
+        element:<Entry />,
+        errorElement:<Error />
+      },
+      {
+        path:"/home",
         element:<Header />,
         errorElement:<Error />
       },

@@ -29,12 +29,12 @@ const User = () => {
             // dispatch(addUser(user));
         }
         catch(err) {
-            if (err.status == 401) {
-                navigate("/login") 
-            }
-            else {
-                <Error />
-            }
+            // if (err.status == 401) {
+            //     navigate("/login") 
+            // }
+            // else {
+            //     <Error />
+            // }
             console.log(err.message);
         }
     }

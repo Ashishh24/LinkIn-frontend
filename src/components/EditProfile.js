@@ -26,8 +26,20 @@ const EditProfile = () => {
     const [phone, setPhone] = useState(userData?.phone || "");
     const [profilePhoto, setProfilePhoto] = useState(userData.profilePhoto);
     const [about, setAbout] = useState(userData?.about || "");
-    // const [skills, setSkills] = useState(userData.skills);
+    const [skill, setSkill] = useState("");
+    const [skills, setSkills] = useState(userData.skills);
 
+    const addSkill = (e) => {
+        e.preventDefault();
+        if(skill.trim() && !skills.includes(skill.trim())){
+            setSkills([...skills, skill.trim()]);
+            setSkill("");
+        }
+    };
+
+    const removeSkill = (index) => {
+        setSkills(skills.filter((_, i) => i !== index));
+    };
 
     const fetchUser = async() => {
         if(userData) return;
@@ -54,7 +66,7 @@ const EditProfile = () => {
 
     const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         dispatch(updateUser({            
             firstName: capitalizeFirstLetter(firstName),
             lastName: capitalizeFirstLetter(lastName),
@@ -62,8 +74,20 @@ const EditProfile = () => {
             phone: phone,
             profilePhoto: profilePhoto,
             about: about,
-            // skills: skills,
+            skills: skills,
         }));
+        const res = await axios.patch(BASE_URL+"profile/edit", {
+            firstName: capitalizeFirstLetter(firstName),
+            lastName: capitalizeFirstLetter(lastName),
+            gender: gender,
+            phone: phone,
+            profilePhoto: profilePhoto,
+            about: about,
+            skills: skills,
+        }, {
+            withCredentials: true,
+        });
+        console.log(res);
         toast.success("Profile updated successfully!");
         navigate("/profile");
     }
@@ -80,6 +104,8 @@ const EditProfile = () => {
         }
     };
 
+
+
     return (
         <div>
             <section className="bg-white dark:bg-gray-900">
@@ -93,14 +119,17 @@ const EditProfile = () => {
                     <div className="w-[60%] md:w-[70%] px-5 border-r-1 border-[#ccc]">
                         <form>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+                                {/* FIRST NAME */}
                                 <div className="sm:col-span-2">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                                    <input type="text" value={firstName} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="" onChange={(e) => setFirstName(e.target.value)}/>
+                                    <input type="text" value={firstName} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 overflow-hidden text-ellipsis" placeholder="Type product name" required="" onChange={(e) => setFirstName(e.target.value)}/>
                                 </div>
+                                {/* LAST NAME */}
                                 <div className="sm:col-span-2">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
                                     <input type="text" value={lastName} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="" onChange={(e) => setLastName(e.target.value)}/>
                                 </div>
+                                {/* GENDER */}
                                 <div className="w-full">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
                                     <select id="category"  value={gender}
@@ -114,27 +143,47 @@ const EditProfile = () => {
                                         <option value="No">Prefer not to say</option>
                                     </select>
                                 </div>
+                                {/* PHONE */}
                                 <div className="w-full">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
                                     <input type="number" value={phone} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required=""  onChange={(e) => setPhone(e.target.value)}/>
                                 </div>
-                                {/* <div>
-                                    <label for="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                    <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        <option selected="">Electronics</option>
-                                        <option value="TV">TV/Monitors</option>
-                                        <option value="PC">PC</option>
-                                        <option value="GA">Gaming/Console</option>
-                                        <option value="PH">Phones</option>
-                                    </select>
-                                </div> */}
-                                {/* <div>
-                                    <label for="item-weight" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Item Weight (kg)</label>
-                                    <input type="number" name="item-weight" id="item-weight" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="15" placeholder="Ex. 12" required=""/>
-                                </div>  */}
+                                {/* ABOUT */}
                                 <div className="sm:col-span-2">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">About</label>
-                                    <textarea rows="5" value={about} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Tell something about yourself..."  onChange={(e) => setAbout(e.target.value)}></textarea>
+                                    <textarea rows="3" value={about} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Tell something about yourself..."  onChange={(e) => setAbout(e.target.value)}></textarea>
+                                </div>
+                                {/* SKILLS */}
+                                <div className="sm:col-span-2">
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Skills
+                                    </label>
+                                    <div className="flex flex-col sm:flex-row gap-2">
+                                        <input
+                                            value={skill}
+                                            onChange={(e) => setSkill(e.target.value)}
+                                            placeholder="Type skill and press Enter"
+                                            onKeyDown={(e) => e.key === "Enter" && addSkill()}
+                                            className="border px-3 py-2 rounded"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={addSkill}
+                                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                        >
+                                            Add
+                                        </button>
+                                    </div>
+
+                                    {/* Current + newly added skills */}
+                                    <div className="flex flex-wrap mt-3 gap-2">
+                                        {skills.map((s, i) => (
+                                            <span key={i} className="flex items-center gap-1 bg-gray-200 text-gray-800 px-3 py-1 rounded-full">
+                                                {s}
+                                                <button onClick={() => removeSkill(i)} className="ml-1 text-red-500">×</button>
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </form>

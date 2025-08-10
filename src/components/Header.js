@@ -29,7 +29,7 @@ const Header = () => {
             dispatch(clearConnections());
             dispatch(clearRequests());
             toast.success("You have been successfully logged out 👍");
-            navigate("/login");
+            navigate("/");
         }
         catch(err){
             toast.error("Logout failed :(")
@@ -55,7 +55,7 @@ const Header = () => {
         <div className="flex h-20 items-center justify-between m-auto dark:bg-gray-950 dark:text-white">
             <div className="w-[60%] flex">
                 <div className="w-[33%]">
-                    <Link to="/"><img className="w-15 mx-auto" src={logo} ></img></Link>
+                    <Link to="/home"><img className="w-15 mx-auto" src={logo} ></img></Link>
                 </div>
                 <div className="w-[67%] flex items-center">
                     <form  onSubmit={handleSearch} className="max-w-md mx-auto w-full ">   
@@ -66,56 +66,47 @@ const Header = () => {
                                 </svg>
                             </div>
                             <input type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} className=" w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." />
-                            <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-[#2E78B6] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                            <button type="submit" className="hidden sm:block text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-[#2E78B6] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+
+                            {/* Icon Button for mobile */}
+                            <button
+                                type="submit"
+                                className="sm:hidden absolute end-2.5 bottom-2.5 p-2 rounded-lg text-white bg-blue-700 
+                                        hover:bg-[#2E78B6] focus:ring-4 focus:outline-none focus:ring-blue-300 
+                                        dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
+                                <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                                >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 3 10.5a7.5 7.5 0 0 0 13.65 6.15z"
+                                />
+                                </svg>
+                            </button>
                         </div>
                     </form>
                 </div>
+                
             </div>
 
             {/* Right section */}
-            <div className="w-[40%] flex justify-center items-center">
-                {/* Desktop Menu */}
-                <ul className="hidden md:flex items-center space-x-6">
-                    <li className="mx-10 items-center"><Link to="/">Home</Link></li>
-                    <li className="mx-10 items-center"><Link to="/requests">New Requets</Link></li>
-                    <li className="mx-10 items-center">Welcome, {user.firstName}</li>
-                </ul>
-
-                {/* Profile Dropdown */}
-                <div className="relative ml-4 hidden md:block">
-                    <button onClick={() => setDropdownOpen(!dropdownOpen)}>
-                        <img
-                            src={user.profilePhoto}
-                            className="rounded-full h-[50px] w-[50px] object-cover cursor-pointer"
-                        />
-                    </button>
-                    { dropdownOpen && (
-                        <div ref={dropdownRef} className="absolute right-0 w-40 border bg-white shadow-lg rounded-md z-50 text-black">
-                            <button onClick={() => navigate("/connections")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                Connections
-                            </button>
-                            <button onClick={() => navigate("/profile")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                View Profile
-                            </button>
-                            <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                Sign Out
-                            </button>
-                        </div>
-                    )}
-                </div>
-
-                {/* Mobile menu */}
-                <div className="md:hidden ml-4 relative">
+            <div className="w-[40%] flex justify-end items-center mr-10">
+                <Link to="/home" className="hidden md:block md:m-5 px-4 py-2 hover:bg-gray-100">Home</Link>
+                <Link to="/requests" className="hidden lg:block md:m-5 px-4 py-2 hover:bg-gray-100">New Requests</Link>
+                <div className="m-2 md:m-5 ml-4 relative">
                     <button onClick={() => setMenuOpen(!menuOpen)}>
-                        <img
-                            src={user.profilePhoto}
-                            className="rounded-full h-[50px] w-[50px] object-cover cursor-pointer"
-                        />
+                        <img src={user.profilePhoto} className="rounded-full h-[50px] w-[50px] object-cover cursor-pointer"/>
                     </button>
-                    { menuOpen && (
-                        <div ref={dropdownRef} className="absolute right-0 top-10 w-48 border bg-white shadow-lg rounded-md z-50 text-black" >
-                            <Link to="/" className="block px-4 py-2 hover:bg-gray-100">Home</Link>
-                            <div className="block px-4 py-2"><Link to="/requets">New Requests</Link></div>
+                    {menuOpen && (
+                        <div ref={dropdownRef} className="absolute right-0 top-10 w-48 border bg-white shadow-lg rounded-md z-50 text-black">
+                            <Link to="/home" className="block md:hidden px-4 py-2 hover:bg-gray-100">Home</Link>
+                            <Link to="/requests" className="block lg:hidden px-4 py-2 hover:bg-gray-100">New Requests</Link>
                             <button onClick={() => navigate("/connections")} className="cursor-pointer block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 Connections
                             </button>

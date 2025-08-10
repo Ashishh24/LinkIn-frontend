@@ -47,18 +47,28 @@ const Connections = () => {
         return;
     }
 
+    if(connections === null) {         
+        return (
+            <div>
+                <Header />
+                <h1 className="font-bold text-2xl flex justify-center my-5">No Connections found!!</h1>
+            </div>
+        )
+    }
+
     return (
-        <div>
+        <div className="min-h-screen dark:bg-gray-950 dark:text-white">
             <Header />
+            <h1 className="text-center text-2xl font-bold">My Connections</h1>
             {connections && <div>
                 {connections.map((connection) => {
                     const {_id, firstName, lastName, about, profilePhoto} = connection;
                     return (
-
-                        <div key={_id} className="flex bg-base-200 border border-[#ccc] w-[50%] align-middle text-center p-5 mx-auto mt-5 dark:bg-gray-700 dark:border-gray-600">
+                        <div key={_id} 
+                        className="flex bg-base-200 border rounded-md mx-auto mt-5 p-5 border-[#ccc] w-[100%] sm:w-[80%] md:w-[60%] lg:w-[40%] align-middle text-center dark:bg-gray-700 dark:border-gray-600 ">
                             {/*profile photo*/}
-                            <div className="w-[15%]">
-                                <img className="w-20 rounded-full border-black" src={profilePhoto} />
+                            <div className="w-[20%]">
+                                <img className="w-20 rounded-full " src={profilePhoto} />
                             </div> 
                             <div className="flex w-[90%] items-center">
                                 <div className="w-[90%]">
@@ -69,14 +79,12 @@ const Connections = () => {
                                         {about}
                                     </div>
                                 </div>
-                                <div>
-                                    {/*connect*/}
+                                {/* <div>
                                     <div className="flex">
                                         <button onClick={handleRemove} className="border rounded-3xl border-[#ccc] py-2 px-7 cursor-pointer hover:bg-[#2E78B6] hover:text-white">Remove</button>
-                                        <button onClick={handleView} className="border rounded-3xl border-[#ccc] py-2 px-7 cursor-pointer hover:bg-[#2E78B6] hover:text-white">View Profile</button>
+                                        <button onClick={handleView} className="border rounded-3xl border-[#ccc] py-2 px-7 cursor-pointer hover:bg-[#2E78B6] hover:text-white">View</button>
                                     </div>
-                                    {/* <div></div> *ignore */}
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     )

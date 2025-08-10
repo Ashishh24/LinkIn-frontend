@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Header from "./Header";
+import Header from "./Header.js";
 import People from "./People";
 import { BASE_URL } from "../utils/url.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,9 +49,16 @@ const Requests = () => {
         }
     }
 
-    if(!requests) return;
-
-    if(requests.length === 0) return (<h1>No Request found!!</h1>)
+    if(requests === null) { 
+        console.log("req length 0");
+        
+        return (
+            <div>
+                <Header />
+                <h1 className="font-bold text-2xl flex justify-center my-5">No Request found!!</h1>
+            </div>
+        )
+    }
 
 
     return (

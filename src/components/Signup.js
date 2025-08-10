@@ -3,26 +3,44 @@ import { ogLogo } from "../utils/links";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/url";
+import toast from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
+import Header from "./Header"
 
 
-const Signup = () => {
+const Signup = ({ onSwitchToLogin }) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [gender, setGender] = useState("");
-    const [phone, setPhone] = useState("");
-    const [profilePhoto, setProfilePhoto] = useState("");
-    const [about, setAbout] = useState("");
-    const [skills, setSkills] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    
+    // const [gender, setGender] = useState("");
+    // const [phone, setPhone] = useState("");
+    // const [profilePhoto, setProfilePhoto] = useState("");
+    // const [about, setAbout] = useState("");
+    // const [skills, setSkills] = useState("");
     
     const navigate = useNavigate();
 
     const handleSignup = async() => {
+        if (!firstName || !lastName || !email || !password || !confirmPassword) {
+            toast.error("Please fill in all fields");
+            return;
+        }
+
+        // Password match check
+        if (password !== confirmPassword) {
+            toast.error("Passwords do not match");
+            return;
+        }
         try{
             const res = await axios.post(BASE_URL+"signup", {
                 firstName, lastName, email, password
             });
+            navigate("/login");
         }
         catch (err) {
             console.log(err.message);
@@ -30,13 +48,13 @@ const Signup = () => {
     }
 
     const handleAlready = () => {
-        navigate("/login");
+        onSwitchToLogin();
+
     }
 
     return (
-        <div className="flex justify-between ">
-            <img className="h-[100vh]" src={ogLogo} />
-            <div className="m-auto px-10 py-5  border-solid border border-gray-600 shadow-2xl ">
+        <div className="flex justify-between">
+            <div className="m-auto px-5 py-5  border-solid border border-gray-600 shadow-2xl ">
                 <h2 className="p-5 text-2xl font-semibold text-center">Create your account</h2>
                 <div>
                     <div className="flex gap-10">
@@ -50,25 +68,6 @@ const Signup = () => {
                         </div>
                     </div>
                     
-                    <div>
-                        {/* <div className="pt-5 flex flex-col">
-                            <label>Date of Birth</label>
-                            <input type="date" className="border border-solid border-black px-1.5"/>
-                        </div>
-
-                        <div className="pt-5 flex flex-col">
-                            <label>Gender</label>
-                            <div className="flex gap-3">
-                            <input type="radio" name="gender" value="male"/>
-                            <label>Male</label><br/>
-                            </div>
-                            <div className="flex gap-3">
-                            <input type="radio" name="gender" value="female"/>
-                            <label>Female</label><br/>
-                            </div>
-                        </div> */}
-                    </div>
-
                     <div className="pt-5 flex flex-col">
                         <label>Email address</label>
                         <input value={email} className="border border-solid border-black px-1.5" onChange={(e) => setEmail(e.target.value)}/>
@@ -76,24 +75,33 @@ const Signup = () => {
 
                     <div className="pt-5 flex flex-col">
                         <label>Password</label>
-                        <input value={password} className="border border-solid border-black px-1.5" onChange={(e) => setPassword(e.target.value)}/>
+                        <div className="relative">
+                            <input type={showPassword ? "text" : "password"} value={password} className="border border-solid border-black px-1.5" onChange={(e) => setPassword(e.target.value)}/>
+                            <span
+                                className="absolute right-2 top-3 cursor-pointer"
+                                onClick={() => setShowPassword(!showPassword)}
+                                >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </span>
+                        </div>
                     </div>
                     
-                    <div>
-                        {/* <div className="pt-5 flex flex-col">
-                            <label>Phone Number</label>
-                            <input type="tel" className="border border-solid border-black"/>
-                        </div>
-
-                        <div className="pt-5 flex flex-col">
-                            <label>Profile Photo</label>
-                            <input className="border border-solid"/>
-                        </div> */}
+                    <div className="pt-5 flex flex-col">
+                        <label>Confirm Password</label>
+                        <div className="relative">
+                            <input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} className="border border-solid border-black px-1.5" onChange={(e) => setConfirmPassword(e.target.value)}/>
+                            <span
+                                className="absolute right-2 top-3 cursor-pointer"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                >
+                                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </span>
+                        </div>                   
                     </div>
-
+                    
                     <div className="items-center text-center">
                         <button className="my-5 p-2 rounded-xl text-black border border-black cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleSignup}>Register</button>
-                        <p onClick={handleAlready} className="cursor-pointer">Already have an account ? Login</p>
+                        <p onClick={handleAlready} className="cursor-pointer text-gray-500 hover:text-black">Already have an account ? Login</p>
                     </div>
                 </div>
             </div>
