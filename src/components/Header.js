@@ -1,6 +1,6 @@
 import axios from "axios";
 import { logo } from "../utils/links";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../../src/utils/userSlice.js";
@@ -12,7 +12,6 @@ import { clearFeed } from "../utils/feedSlice.js";
 
 const Header = () => {
     const [searchText, setSearchText] = useState("");
-    const [dropdownOpen, setDropdownOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
 
     const dropdownRef = useRef(null); 

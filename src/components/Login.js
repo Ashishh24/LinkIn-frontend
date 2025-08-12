@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ogLogo } from "../utils/links"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -20,8 +19,6 @@ const Login = ({ onSwitchToSignup }) => {
             const res = await axios.post(BASE_URL+"login", {
                 email, password
             }, { withCredentials: true });
-            console.log(res);
-            console.log(res.data);
             dispatch(addUser(res.data));
             toast.success("Login successful!");
             navigate("/home");
@@ -43,7 +40,6 @@ const Login = ({ onSwitchToSignup }) => {
 
     return (
         <div> 
-            {/* <img className="h-[100vh]" src={ogLogo} /> */}
             <div>
                 <h1 className="text-center font-bold text-xl">Login to continue...</h1>
                 <div className="pt-5 flex flex-col">

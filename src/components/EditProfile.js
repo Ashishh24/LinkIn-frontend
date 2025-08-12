@@ -9,13 +9,6 @@ import axios from "axios";
 const EditProfile = () => {
 
     const userData = useSelector(store => store.user);
-    // const userData = {
-    //     firstName: "Ashish",
-    //     lastName: "Anand",
-    //     email: "ashish@google.com",
-    //     profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
-    //     phone: ""
-    // }
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
@@ -222,31 +215,3 @@ const EditProfile = () => {
 }
 
 export default EditProfile;
-
-
-
-
-{/* <div className="w-[30%] px-5 flex flex-col gap-4 items-end">
-    Current Image Preview
-    <div className="max-w-96 max-h-96 rounded-full overflow-hidden border shadow">
-        <img
-        src={profilePhoto}
-        alt="Profile"
-        className="w-full h-full object-cover"
-        />
-    </div>
-
-    Upload New Image
-    <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-            file:rounded-full file:border-0
-            file:text-sm file:font-semibold
-            file:bg-blue-50 file:text-blue-700
-            hover:file:bg-blue-100"
-    />
-    <label>Enter Photo URL:</label>
-    <input type="text" value={profilePhoto} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="" onChange={(e) => setProfilePhoto(e.target.value)}/> }
-</div> */}

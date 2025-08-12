@@ -1,12 +1,9 @@
 import axios from "axios";
-import { ogLogo } from "../utils/links";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/url";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
-import Header from "./Header"
-
 
 const Signup = ({ onSwitchToLogin }) => {
     const [firstName, setFirstName] = useState("");

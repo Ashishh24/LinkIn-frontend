@@ -26,8 +26,8 @@ const Entry = () => {
                 {/* About Modal */}
                 {showAbout && (
                     <div className="modal-overlay" onClick={() => setShowAbout(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <h2 className="text-left md:text-xl">We’re excited to have you here. LinkIn is your space to connect with like-minded people, share your ideas, and grow your professional network. Whether you’re looking to collaborate on projects, discover new opportunities, or simply stay updated with your connections, LinkIn makes it easy and engaging. Sign in to continue where you left off, or create a new account to start your journey today. Your network is your strength, let’s build it together, one connection at a time.</h2>
+                    <div className="modal-contentAbout" onClick={(e) => e.stopPropagation()}>
+                        <h2 className="text-left md:text-xl">This is a personal project I built to enhance my skills in technology stack, e.g., React and Node.js. It helped me practice full-stack development and learn practical implementation of key features, e.g., user authentication, API integration, responsive design.</h2>
                     </div>
                     </div>
                 )}
@@ -35,7 +35,7 @@ const Entry = () => {
                 {/* Login Modal */}
                 {showLogin && (
                     <div className="modal-overlay" onClick={() => setShowLogin(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal-contentLogin" onClick={(e) => e.stopPropagation()}>
                         <Login 
                             onClose={() => setShowLogin(false)} 
                             onSwitchToSignup={() => {
@@ -73,7 +73,14 @@ const Entry = () => {
                         justify-content: center; 
                         align-items: center;
                     }
-                    .modal-content {
+                    .modal-contentAbout {
+                        background: white;
+                        padding: 20px;
+                        border-radius: 10px;
+                        width: 500px;
+                        text-align: left;
+                    }
+                    .modal-contentLogin {
                         background: white;
                         padding: 20px;
                         border-radius: 10px;

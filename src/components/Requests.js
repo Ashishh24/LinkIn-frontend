@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Header from "./Header.js";
-import People from "./People";
 import { BASE_URL } from "../utils/url.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addRequest, removeRequest } from "../utils/requestSlice.js";
@@ -8,44 +7,17 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
 const Requests = () => {
-    // const requests = useSelector((store) => store.requests);
-
-    const requests = [
-        {
-            _id:1, 
-            fromUserID: { 
-                _id: 3, 
-                firstName: "madhu", 
-                lastName: "ray",  
-                profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", 
-                bio:"Data Analyst || SQL || Python Developer"
-            },
-            toUserID: 1,
-            status: "connect",
-        },
-        {
-            _id:2, 
-            fromUserID: { 
-                _id: 4, 
-                firstName: "vikas", 
-                lastName: "ray",  
-                profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", 
-                bio:"Data Analyst || SQL || Python Developer"
-            },
-            toUserID: 1,
-            status: "connect",
-        }
-    ]
+    const requests = useSelector((store) => store.requests);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const requestsData = async () => {
         if(requests) return;
         try {
-            // const res = await axios.get(BASE_URL+"user/connectionRequest", {
-            //     withCredentials: true,
-            // });
-            // dispatch(addRequest(res.data.data));
+            const res = await axios.get(BASE_URL+"user/connectionRequest", {
+                withCredentials: true,
+            });
+            dispatch(addRequest(res.data.data));
         }
         catch(err) {
             console.log(err.message);
@@ -87,8 +59,6 @@ const Requests = () => {
             <Header />
             {requests && <div>
                 {requests.map((request) => {
-                    // return <RequestPeople key={p._id} data={p}/>
-                    console.log(request);
                     const {_id} = request;
                     const fromUserID = request.fromUserID;
                     const { firstName, lastName, bio, profilePhoto} = fromUserID;
@@ -104,8 +74,6 @@ const Requests = () => {
                                     <div 
                                         className="flex space-x-2 text-xl cursor-pointer" 
                                         onClick={() => {
-                                                const newurl = `/profile/${fromUserID._id}`;
-                                                console.log(newurl);
                                                 navigate(`/profile/${fromUserID._id}`, {
                                                 state: { _id, fromUserID }
                                             })}
@@ -126,11 +94,8 @@ const Requests = () => {
                             </div>
                         </div>
                     )
-
-
                 })}
             </div>}
-            {/* <People /> */}
         </div>
     )
 };

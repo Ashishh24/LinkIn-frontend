@@ -8,15 +8,8 @@ import axios from "axios";
 
 const AddConenction = () => {
     const feed = useSelector((store) => store.feed);
-    console.log("feed1", feed);
     
     const dispatch = useDispatch();
-    // const data = [
-    //     {_id: 1, firstName: "Malti", lastName: "Jha", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
-    //     {_id: 2, firstName: "Alka", lastName: "Jha", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
-    //     {_id: 3, firstName: "Aryan", lastName: "Jha", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
-    // ]
-    // console.log(data);
     
     const feedData = async () => {
         if(feed) return;
@@ -27,7 +20,6 @@ const AddConenction = () => {
             console.log(res);
             
             dispatch(addFeed(res.data.data));
-            // dispatch(addFeed(data));
         }
         catch(err) {
             console.log(err.message);
@@ -44,10 +36,8 @@ const AddConenction = () => {
             {feed && <div>
                 {feed.map((p) => {                    
                     return <People key={p._id} data={p}/>
-                    // for real data (to correct after checking from db)
                 })}
             </div>}
-            {/* <People /> */}
         </div>
     )
 };

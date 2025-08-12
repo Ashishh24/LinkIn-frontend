@@ -1,39 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { BASE_URL } from "../utils/url";
+import { removeRequest } from "../utils/requestSlice";
 
 const ViewProfile = () => {
+    const dispatch = useDispatch();
     const { state } = useLocation();
-
     const { _id, fromUserID} = state;
-    console.log("From user:", fromUserID);
-    console.log("Request ID:", _id);
-
-    // const { _id } = useParams();
     const [userData, setUserData] = useState(null);
-    // const userData = {_id:1, firstName: "Kashish", lastName: "Nayak", email:"kashish@google.com", phone:"9999999999",  about:"Hi, this is Kashish Nayak", title:"Superset🤡", profilePhoto:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz68b1g8MSxSUqvFtuo44MvagkdFGoG7Z7DQ&s", skills:["react", "node.js", "qa"]};
-    // const fetchData = async ()  => {
-        // user = await axios.get(BASE_URL + "profile/view/" + _id);
-        // const user = {_id:1, firstName: "Kashish", lastName: "Nayak",bio:"Hi, this is Kashish Nayak", title:"Superset🤡", profilePhoto:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz68b1g8MSxSUqvFtuo44MvagkdFGoG7Z7DQ&s", skills:["react", "node.js", "qa"]};
-        // console.log(user);
-        
-        // setUserData(user);
-    // }
+    const [isPendingReq, setIsPendingReq] = useState(true);
     
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
-
     useEffect(() => {
         if (fromUserID) {
             setUserData(fromUserID);
         }
     }, [fromUserID]);
-
-    // setUserData(fromUserID);
-    console.log(userData);
-    
 
     const handleConnect = async(_id, status) => {
         try{
@@ -42,10 +25,10 @@ const ViewProfile = () => {
                 withCredentials: true,
             })
             dispatch(removeRequest(_id));
+            setIsPendingReq(false);
         }
         catch(err){
             console.log(err.message);
-            
         }
     }
 
@@ -57,7 +40,6 @@ const ViewProfile = () => {
 
     return (
         <div>
-            {/* <Header /> */}
             <div className="bg-gradient-to-r from-indigo-800 to-blue-900 min-h-screen flex items-center justify-center p-4">
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full p-8 transition-all duration-300 animate-fade-in">
                     <div className="flex flex-col md:flex-row">
@@ -66,17 +48,17 @@ const ViewProfile = () => {
                         <img src={userData.profilePhoto} className="rounded-full w-48 h-48 mx-auto mb-4 border-4 border-indigo-800 dark:border-blue-900 transition-transform duration-300 hover:scale-105"/>
                         <h1 className="text-2xl font-bold text-indigo-800 dark:text-white mb-2">{userData.firstName + " " + userData.lastName}</h1>
                         <p className="text-gray-600 dark:text-gray-300">{userData.title}</p>
-                        <div className="flex justify-center gap-5">
-                        <button 
-                            onClick={() => handleConnect(_id,"accept")} 
-                            className="mt-4 bg-indigo-800 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">
-                            Accept
-                        </button><button 
-                            onClick={() => handleConnect(_id,"reject")} 
-                            className="mt-4 bg-indigo-800 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">
-                            Reject
-                        </button>
-                        </div> 
+                        {isPendingReq ? (<div className="flex justify-center gap-5">
+                            <button 
+                                onClick={() => handleConnect(_id,"accept")} 
+                                className="mt-4 bg-indigo-800 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">
+                                Accept
+                            </button><button 
+                                onClick={() => handleConnect(_id,"reject")} 
+                                className="mt-4 bg-indigo-800 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">
+                                Reject
+                            </button>
+                        </div>) : null}
                     </div>
 
                     {/* Right Section */}
@@ -91,18 +73,21 @@ const ViewProfile = () => {
                         <h2 className="text-xl font-semibold text-indigo-800 dark:text-white mb-4">
                         Skills
                         </h2>
-                        <div className="flex flex-wrap gap-2 mb-6">
-                        {/* {userData.skills.map(
-                            (skill, idx) => (
-                            <span
-                                key={idx}
-                                className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm cursor-pointer"
-                            >
-                                {skill}
-                            </span>
-                            )
-                        )} */}
-                        </div>
+                        {userData.skills 
+                            ? <div className="flex flex-wrap gap-2 mb-6">
+                            {userData.skills.map(
+                                (skill, idx) => (
+                                <span
+                                    key={idx}
+                                    className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm cursor-pointer"
+                                >
+                                    {skill}
+                                </span>
+                                )
+                            )}
+                            </div>
+                            : <p className="mb-6">No skills added yet.</p>
+                        }
 
                         <h2 className="text-xl font-semibold text-indigo-800 dark:text-white mb-4">Contact Information</h2>
                         <ul className="space-y-2 text-gray-700 dark:text-gray-300">

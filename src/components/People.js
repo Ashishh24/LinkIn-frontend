@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeFeed } from "../utils/feedSlice";
 import axios from "axios";
 import { BASE_URL } from "../utils/url";
@@ -9,10 +9,7 @@ const People = (props) => {
 
     const handleConnect = async(_id) => {
         const res = await axios.post(BASE_URL+"request/send/connect/" + _id, {}, { withCredentials: true } )
-        // const feed = useSelector(store => store.feed);
-        dispatch(removeFeed(_id));
-        // console.log("removed feed",firstName);
-        
+        dispatch(removeFeed(_id));        
     }
 
     return (
