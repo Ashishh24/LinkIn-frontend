@@ -6,7 +6,8 @@
   "author": "Ashish Anand",
   "type": "module",
   "scripts": {
-    "start": "parcel index.html"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "devDependencies": {
     "@parcel/transformer-react-refresh-wrap": "^2.15.4",
