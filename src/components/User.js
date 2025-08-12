@@ -19,22 +19,14 @@ const User = () => {
             });
             console.log("userrrrrrrr");
             dispatch(addUser(user.data));
-            /** DUMMY USER FOR TEST PURPOSE, WILL REMOVE WHEN MAKE LIVE */
-            // const user = {
-            //     firstName: "Ashish",
-            //     lastName: "Anand",
-            //     email: "ashish@google.com",
-            //     profilePhoto: "https://media.licdn.com/dms/image/v2/D5603AQEn2R6cZas60w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1696881242846?e=1757548800&v=beta&t=jt-JixJkevT34NzSucwhj_ygJw39ug7A6Fde4uyX41M",
-            // }
-            // dispatch(addUser(user));
         }
         catch(err) {
-            // if (err.status == 401) {
-            //     navigate("/login") 
-            // }
-            // else {
-            //     <Error />
-            // }
+            if (err.status == 401) {
+                navigate("/") 
+            }
+            else {
+                <Error />
+            }
             console.log(err.message);
         }
     }

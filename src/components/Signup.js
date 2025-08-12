@@ -40,7 +40,7 @@ const Signup = ({ onSwitchToLogin }) => {
             const res = await axios.post(BASE_URL+"signup", {
                 firstName, lastName, email, password
             });
-            navigate("/login");
+            navigate("/");
         }
         catch (err) {
             console.log(err.message);
