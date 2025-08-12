@@ -5,26 +5,47 @@ import { BASE_URL } from "../utils/url.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addRequest, removeRequest } from "../utils/requestSlice.js";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const Requests = () => {
-    const requests = useSelector((store) => store.requests);
-    
-    // const data = [
-    //     {_id: 1, firstName: "Madhu", lastName: "Ray", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
-    //     {_id: 2, firstName: "Sonal", lastName: "Jha", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
-    //     {_id: 3, firstName: "Akshita", lastName: "Jha", profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", bio:"Data Analyst || SQL || Python Developer"},
-    // ]
+    // const requests = useSelector((store) => store.requests);
+
+    const requests = [
+        {
+            _id:1, 
+            fromUserID: { 
+                _id: 3, 
+                firstName: "madhu", 
+                lastName: "ray",  
+                profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", 
+                bio:"Data Analyst || SQL || Python Developer"
+            },
+            toUserID: 1,
+            status: "connect",
+        },
+        {
+            _id:2, 
+            fromUserID: { 
+                _id: 4, 
+                firstName: "vikas", 
+                lastName: "ray",  
+                profilePhoto: "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png", 
+                bio:"Data Analyst || SQL || Python Developer"
+            },
+            toUserID: 1,
+            status: "connect",
+        }
+    ]
 
     const dispatch = useDispatch();
-    
+    const navigate = useNavigate();
     const requestsData = async () => {
         if(requests) return;
         try {
-            const res = await axios.get(BASE_URL+"user/connectionRequest", {
-                withCredentials: true,
-            });
-            dispatch(addRequest(res.data.data));
-            // dispatch(addRequest(data));
+            // const res = await axios.get(BASE_URL+"user/connectionRequest", {
+            //     withCredentials: true,
+            // });
+            // dispatch(addRequest(res.data.data));
         }
         catch(err) {
             console.log(err.message);
@@ -68,8 +89,9 @@ const Requests = () => {
                 {requests.map((request) => {
                     // return <RequestPeople key={p._id} data={p}/>
                     console.log(request);
-                    const {_id} = request 
-                    const { firstName, lastName, bio, profilePhoto} = request.fromUserID;
+                    const {_id} = request;
+                    const fromUserID = request.fromUserID;
+                    const { firstName, lastName, bio, profilePhoto} = fromUserID;
 
                     return (
                         <div key={_id} className="flex bg-base-200 border border-[#ccc] w-[50%] align-middle text-center p-5 mx-auto mt-5 dark:bg-gray-700 dark:border-gray-600">
@@ -79,8 +101,17 @@ const Requests = () => {
                             </div> 
                             <div className="flex w-[90%] items-center">
                                 <div className="w-[90%]">
-                                    <div className="flex space-x-2 text-xl">
-                                        {firstName + " " + lastName}
+                                    <div 
+                                        className="flex space-x-2 text-xl cursor-pointer" 
+                                        onClick={() => {
+                                                const newurl = `/profile/${fromUserID._id}`;
+                                                console.log(newurl);
+                                                navigate(`/profile/${fromUserID._id}`, {
+                                                state: { _id, fromUserID }
+                                            })}
+                                        }
+                                        >
+                                            {firstName + " " + lastName}
                                     </div>
                                     <div className="text-left">
                                         {bio}

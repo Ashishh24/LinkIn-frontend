@@ -16,6 +16,7 @@ import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 import { Toaster } from "react-hot-toast";
 import Entry from "./components/Entry";
+import ViewProfile from "./components/ViewProfile";
 
 const App = () => {
   
@@ -23,7 +24,7 @@ const App = () => {
     <Provider store={appStore}>
       <Toaster position="top-center" reverseOrder={false} />
       <div>
-        <User />
+        {/* <User /> */}
         <Outlet />
       </div>
     </Provider>
@@ -73,6 +74,10 @@ const appRouter = createBrowserRouter([
       {
         path:"/requests",
         element: <Requests />,
+      },
+      {
+        path:"/profile/:_id",
+        element: <ViewProfile />,
       },
     ]
   }
