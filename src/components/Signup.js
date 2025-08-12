@@ -37,10 +37,12 @@ const Signup = ({ onSwitchToLogin }) => {
             const res = await axios.post(BASE_URL+"signup", {
                 firstName, lastName, email, password
             });
+            toast.success("Account created Successfully!! Login to continue")
             navigate("/");
         }
         catch (err) {
             console.log(err.message);
+            toast.error(err.message);
         }
     }
 
