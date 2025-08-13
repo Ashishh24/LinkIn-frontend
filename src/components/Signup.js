@@ -14,12 +14,6 @@ const Signup = ({ onSwitchToLogin }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     
-    // const [gender, setGender] = useState("");
-    // const [phone, setPhone] = useState("");
-    // const [profilePhoto, setProfilePhoto] = useState("");
-    // const [about, setAbout] = useState("");
-    // const [skills, setSkills] = useState("");
-    
     const navigate = useNavigate();
 
     const handleSignup = async() => {
@@ -38,17 +32,15 @@ const Signup = ({ onSwitchToLogin }) => {
                 firstName, lastName, email, password
             });
             toast.success("Account created Successfully!! Login to continue")
-            navigate("/");
+            onSwitchToLogin();
         }
         catch (err) {
-            console.log(err.message);
             toast.error(err.message);
         }
     }
 
     const handleAlready = () => {
         onSwitchToLogin();
-
     }
 
     return (
