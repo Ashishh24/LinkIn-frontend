@@ -27,7 +27,7 @@ const Entry = () => {
                 {showAbout && (
                     <div className="modal-overlay" onClick={() => setShowAbout(false)}>
                     <div className="modal-contentAbout" onClick={(e) => e.stopPropagation()}>
-                        <h2 className="text-left md:text-xl">This is a personal project I built to enhance my skills in technology stack, e.g., React and Node.js. It helped me practice full-stack development and learn practical implementation of key features, e.g., user authentication, API integration, responsive design.</h2>
+                        <h2 className="text-left md:text-xl fontttt">This is a personal project I built to enhance my skills in technology stack, e.g., React and Node.js. It helped me practice full-stack development and learn practical implementation of key features, e.g., user authentication, API integration, responsive design.</h2>
                     </div>
                     </div>
                 )}
@@ -64,6 +64,9 @@ const Entry = () => {
                 )}
 
                 <style>{`
+                    .fontttt{
+                        font-family: cursive;
+                    }
                     .modal-overlay {
                         position: fixed;
                         top: 0; left: 0;

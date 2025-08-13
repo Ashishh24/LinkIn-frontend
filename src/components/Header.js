@@ -38,15 +38,10 @@ const Header = () => {
 
     const handleSearch = (val) => {
         val.preventDefault();
-        if (!searchText) {
-            navigate("/add")
-        } else {
-            console.log("Search for:", searchText);
-        }
+        navigate("/add", {state: {searchText}})
     }
 
     const user = useSelector((store) => store.user);
-    // console.log(user);
 
     if (!user) return null;
 

@@ -38,7 +38,7 @@ const Connections = () => {
     }
 
     return (
-        <div className="min-h-screen dark:bg-gray-950 dark:text-white">
+        <div className="min-h-screen">
             <Header />
             <h1 className="text-center text-2xl font-bold">My Connections</h1>
             {connections && <div>
@@ -46,7 +46,7 @@ const Connections = () => {
                     const {_id, firstName, lastName, about, profilePhoto} = connection;
                     return (
                         <div key={_id} 
-                        className="flex bg-base-200 border rounded-md mx-auto mt-5 p-5 border-[#ccc] w-[100%] sm:w-[80%] md:w-[60%] lg:w-[40%] align-middle text-center dark:bg-gray-700 dark:border-gray-600 ">
+                        className="flex bg-base-200 border rounded-md mx-auto mt-5 p-5 border-[#ccc] w-[100%] sm:w-[80%] md:w-[60%] lg:w-[40%] align-middle text-center">
                             {/*profile photo*/}
                             <div className="w-[20%]">
                                 <img className="w-20 rounded-full " src={profilePhoto} />
@@ -63,7 +63,6 @@ const Connections = () => {
                             </div>
                         </div>
                     )
-
                 })}
             </div>}
         </div>

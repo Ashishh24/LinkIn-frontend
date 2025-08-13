@@ -13,7 +13,7 @@ const People = (props) => {
     }
 
     return (
-        <div className="flex bg-base-200 border border-[#ccc] w-[50%] align-middle text-center p-5 mx-auto mt-5 dark:bg-gray-700 dark:border-gray-600">
+        <div className="flex bg-base-200 border border-[#ccc] w-[50%] align-middle text-center p-5 mx-auto mt-5">
             <div className="w-[15%]">
                 <img className="w-20 rounded-full border-black" src={profilePhoto} />
             </div> 
