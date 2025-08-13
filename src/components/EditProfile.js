@@ -55,29 +55,33 @@ const EditProfile = () => {
     const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     
     const handleSubmit = async (e) => {
-        dispatch(updateUser({            
-            firstName: capitalizeFirstLetter(firstName),
-            lastName: capitalizeFirstLetter(lastName),
-            gender: gender,
-            phone: phone,
-            profilePhoto: profilePhoto,
-            about: about,
-            skills: skills,
-        }));
-        const res = await axios.patch(BASE_URL+"profile/edit", {
-            firstName: capitalizeFirstLetter(firstName),
-            lastName: capitalizeFirstLetter(lastName),
-            gender: gender,
-            phone: phone,
-            profilePhoto: profilePhoto,
-            about: about,
-            skills: skills,
-        }, {
-            withCredentials: true,
-        });
-        console.log(res);
-        toast.success("Profile updated successfully!");
-        navigate("/profile");
+        try{
+            dispatch(updateUser({            
+                firstName: capitalizeFirstLetter(firstName),
+                lastName: capitalizeFirstLetter(lastName),
+                gender: gender,
+                phone: phone,
+                profilePhoto: profilePhoto,
+                about: about,
+                skills: skills,
+            }));
+            const res = await axios.patch(BASE_URL+"profile/edit", {
+                firstName: capitalizeFirstLetter(firstName),
+                lastName: capitalizeFirstLetter(lastName),
+                gender: gender,
+                phone: phone,
+                profilePhoto: profilePhoto,
+                about: about,
+                skills: skills,
+            }, {
+                withCredentials: true,
+            });
+            toast.success("Profile updated successfully!");
+            navigate("/profile");
+        }
+        catch(err){
+            toast.error(err.message);
+        }
     }
 
     const cancelButton = () => {
