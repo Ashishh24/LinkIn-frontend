@@ -57,10 +57,10 @@ const FindPeople = () => {
     useEffect(() => {
         const searchLower = searchText?.toLowerCase() || "";
 
-        setFilterCon(connections.filter(f => `${f.firstName} ${f.lastName}`.toLowerCase().includes(searchLower)));
-        setFilterReq(requests.filter(f => `${f.fromUserID.firstName} ${f.fromUserID.lastName}`.toLowerCase().includes(searchLower)));
-        setFilterFeed(feed.filter(f => `${f.firstName} ${f.lastName}`.toLowerCase().includes(searchLower)));
-        setFilterReqSent(requestsSent.filter(f => `${f.toUserID.firstName} ${f.toUserID.lastName}`.toLowerCase().includes(searchLower)));
+        setFilterCon(connections?.filter(f => `${f.firstName} ${f.lastName}`.toLowerCase().includes(searchLower)));
+        setFilterReq(requests?.filter(f => `${f.fromUserID.firstName} ${f.fromUserID.lastName}`.toLowerCase().includes(searchLower)));
+        setFilterFeed(feed?.filter(f => `${f.firstName} ${f.lastName}`.toLowerCase().includes(searchLower)));
+        setFilterReqSent(requestsSent?.filter(f => `${f.toUserID.firstName} ${f.toUserID.lastName}`.toLowerCase().includes(searchLower)));
     
     }, [searchText, connections, requests, feed, requestsSent]);
 
