@@ -35,7 +35,7 @@ const Signup = ({ onSwitchToLogin }) => {
             onSwitchToLogin();
         }
         catch (err) {
-            toast.error(err.message);
+            toast.error(err.response.data.message);
         }
     }
 

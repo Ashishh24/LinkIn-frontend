@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
 import Error from "./components/Error";
-import AddConenction from "./components/AddConnection";
+import FindPeople from "./components/FindPeople";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 import User from "./components/User";
@@ -13,6 +13,7 @@ import Requests from "./components/Requests";
 import { Toaster } from "react-hot-toast";
 import Entry from "./components/Entry";
 import ViewProfile from "./components/ViewProfile";
+import RequestsSent from "./components/RequestsSent";
 
 const App = () => {
   
@@ -44,7 +45,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path:"/add",
-        element: <AddConenction />,
+        element: <FindPeople />,
       },
       {
         path:"/profile",
@@ -61,6 +62,10 @@ const appRouter = createBrowserRouter([
       {
         path:"/requests",
         element: <Requests />,
+      },
+      {
+        path:"/requests/sent",
+        element: <RequestsSent />,
       },
       {
         path:"/profile/:_id",

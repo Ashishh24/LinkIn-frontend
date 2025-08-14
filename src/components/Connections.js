@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Header from "./Header";
+import People from "./People.js";
 import { BASE_URL } from "../utils/url.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnection } from "../utils/connectionSlice.js";
@@ -42,28 +43,9 @@ const Connections = () => {
             <Header />
             <h1 className="text-center text-2xl font-bold">My Connections</h1>
             {connections && <div>
-                {connections.map((connection) => {
-                    const {_id, firstName, lastName, about, profilePhoto} = connection;
-                    return (
-                        <div key={_id} 
-                        className="flex bg-base-200 border rounded-md mx-auto mt-5 p-5 border-[#ccc] w-[100%] sm:w-[80%] md:w-[60%] lg:w-[40%] align-middle text-center">
-                            {/*profile photo*/}
-                            <div className="w-[20%]">
-                                <img className="w-20 rounded-full " src={profilePhoto} />
-                            </div> 
-                            <div className="flex w-[90%] items-center">
-                                <div className="w-[90%]">
-                                    <div className="flex space-x-2 text-xl">
-                                        {firstName + " " + lastName}
-                                    </div>
-                                    <div className="text-left">
-                                        {about}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                })}
+                {connections.map((connection) => (
+                    <People key={connection._id} data={connection} type="connection"/>
+                ))}
             </div>}
         </div>
     )

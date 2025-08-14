@@ -24,13 +24,7 @@ const Login = ({ onSwitchToSignup }) => {
             navigate("/home");
         }
         catch(err){
-            if(err.status === 404){
-                toast.error("Email not found")
-            }
-            if(err.status === 403){
-                toast.error("Invalid Password")
-            }
-            console.log(err.message);
+                toast.error(err.response.data.message);
         }
     }
 

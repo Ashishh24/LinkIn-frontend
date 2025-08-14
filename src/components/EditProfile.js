@@ -80,7 +80,7 @@ const EditProfile = () => {
             navigate("/profile");
         }
         catch(err){
-            toast.error(err.message);
+            toast.error(err.response.data.message);
         }
     }
 
@@ -100,10 +100,10 @@ const EditProfile = () => {
 
     return (
         <div>
-            <section className="bg-white dark:bg-gray-900">
+            <section className="bg-white">
                 {/* HEADER */}
                 <div className="text-center py-5">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Edit Profile</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">Edit Profile</h2>
                 </div>
                 
                 {/* EDIT DATA */}
@@ -113,22 +113,22 @@ const EditProfile = () => {
                             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                                 {/* FIRST NAME */}
                                 <div className="sm:col-span-2">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                                    <input type="text" value={firstName} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 overflow-hidden text-ellipsis" placeholder="Type product name" required="" onChange={(e) => setFirstName(e.target.value)}/>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">First Name</label>
+                                    <input type="text" value={firstName} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onChange={(e) => setFirstName(e.target.value)}/>
                                 </div>
                                 {/* LAST NAME */}
                                 <div className="sm:col-span-2">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                                    <input type="text" value={lastName} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="" onChange={(e) => setLastName(e.target.value)}/>
+                                    <label className="block mb-2 text-sm font-medium text-gray-">Last Name</label>
+                                    <input type="text" value={lastName} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"onChange={(e) => setLastName(e.target.value)}/>
                                 </div>
                                 {/* GENDER */}
                                 <div className="w-full">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">Gender</label>
                                     <select id="category"  value={gender}
                                         onChange={(e) => {
                                             const selectedGender = e.target.value;
                                             setGender(selectedGender);
-                                        }} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        }} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                         <option defaultValue="Choose">Choose Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -137,17 +137,17 @@ const EditProfile = () => {
                                 </div>
                                 {/* PHONE */}
                                 <div className="w-full">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                                    <input type="number" value={phone} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required=""  onChange={(e) => setPhone(e.target.value)}/>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">Phone</label>
+                                    <input type="text" value={phone} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" onChange={(e) => setPhone(e.target.value)}/>
                                 </div>
                                 {/* ABOUT */}
                                 <div className="sm:col-span-2">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">About</label>
-                                    <textarea rows="3" value={about} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Tell something about yourself..."  onChange={(e) => setAbout(e.target.value)}></textarea>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">About</label>
+                                    <textarea rows="3" value={about} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500" placeholder="Tell something about yourself..."  onChange={(e) => setAbout(e.target.value)}></textarea>
                                 </div>
                                 {/* SKILLS */}
                                 <div className="sm:col-span-2">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    <label className="block mb-2 text-sm font-medium text-gray-900">
                                         Skills
                                     </label>
                                     <div className="flex flex-col sm:flex-row gap-2">
@@ -161,7 +161,7 @@ const EditProfile = () => {
                                         <button
                                             type="button"
                                             onClick={addSkill}
-                                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
                                         >
                                             Add
                                         </button>
@@ -206,10 +206,10 @@ const EditProfile = () => {
                 
                 {/* SUBMIT/CANCEL BUTTON */}
                 <div className="flex justify-center space-x-4 pb-4">
-                    <button onClick={handleSubmit} className="border rounded-xl px-3 py-2 cursor-pointer dark:text-white dark:border-white hover:bg-blue-500 hover:text-white dark:hover:bg-blue-800">
+                    <button onClick={handleSubmit} className="border rounded-xl px-3 py-2 cursor-pointer hover:bg-blue-500 hover:text-white">
                         Update Profile
                     </button>
-                    <button onClick={cancelButton} className="border rounded-xl px-3 py-2 cursor-pointer dark:text-white dark:border-white hover:bg-red-600 hover:text-white dark:hover:bg-red-900">
+                    <button onClick={cancelButton} className="border rounded-xl px-3 py-2 cursor-pointer hover:bg-red-600 hover:text-white">
                         Cancel
                     </button>
                 </div>
