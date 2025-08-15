@@ -48,6 +48,7 @@ const Login = ({ onSwitchToSignup }) => {
                 toast.success("OTP sent successfully");
                 setShowOtpModal(true);
                 setOtp("");
+                setEmail("");
             }
         }
         catch(err){
