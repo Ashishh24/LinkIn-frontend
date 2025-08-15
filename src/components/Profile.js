@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/url";
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -35,13 +36,24 @@ const Profile = () => {
         navigate("/home");
     }
 
+    const handleDelete = async() => {
+        try {
+            const res = await axios.delete(BASE_URL+"profile/delete");
+            toast.message("Profile deleted sucessfully!!");
+            navigate("/");
+        }
+        catch(err){
+            console.log(err.message);
+        }
+    }
+
     return (
         <div>
             <div className="bg-gradient-to-r from-indigo-800 to-blue-900 min-h-screen flex items-center justify-center p-4">
                 <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full p-8 transition-all duration-300 animate-fade-in">
                     <div className="flex flex-col md:flex-row">
                     {/* Left Section */}
-                    <div className="md:w-1/3 text-center mb-8 md:mb-0">
+                    <div className="md:w-1/2 text-center mb-8 md:mb-0">
                         <img src={userData.profilePhoto} className="rounded-full w-48 h-48 mx-auto mb-4 border-4 border-indigo-800 transition-transform duration-300 hover:scale-105"/>
                         <h1 className="text-2xl font-bold text-indigo-800 mb-2">{userData.firstName + " " + userData.lastName}</h1>
                         <p className="text-gray-600">{userData.title}</p>
@@ -54,6 +66,11 @@ const Profile = () => {
                             onClick={handleHome} 
                             className="mt-4 bg-indigo-800 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">
                             Home
+                        </button>
+                        <button 
+                            onClick={handleDelete} 
+                            className="mt-4 bg-red-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-red-900 transition-colors duration-300">
+                            Delete Profile
                         </button>
                         </div> 
                     </div>

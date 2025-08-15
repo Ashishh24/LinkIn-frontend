@@ -14,6 +14,10 @@ const Login = ({ onSwitchToSignup }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [otp, setOtp] = useState("");
+    const [showOtpModal, setShowOtpModal] = useState(false);
+    const [showEmailModal, setShowEmailModal] = useState(false);
+
     const handleLogin = async () => {
         try{
             const res = await axios.post(BASE_URL+"login", {
@@ -31,6 +35,40 @@ const Login = ({ onSwitchToSignup }) => {
     const handleNoAccount = () => {
         onSwitchToSignup();
     }
+
+    const sendOTP = async() => {
+        try {
+            const res = await axios.post(`${BASE_URL}send-otp`, { email });
+            console.log(res.data);
+            if(res.status === 200){
+                toast.success(res.data.message);
+                setShowEmailModal(false);
+            }
+            else{
+                toast.success("OTP sent successfully");
+                setShowOtpModal(true);
+                setOtp("");
+            }
+        }
+        catch(err){
+            toast.error(err?.response?.data?.message || err.message || "Something went wrong!") 
+        }
+    }
+
+    const handleVerifyOtp = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await axios.post(`${BASE_URL}verify-otp`, {
+                email, otp
+            });
+            setShowOtpModal(false);
+            setShowEmailModal(false);
+            toast.success("Email verified!! Login to continue");
+            onSwitchToLogin();
+        } catch (err) {
+            setMessage(err.response?.data?.message || "OTP verification failed");
+        }
+    };
 
     return (
         <div> 
@@ -57,6 +95,28 @@ const Login = ({ onSwitchToSignup }) => {
 
                 <div className="items-center text-center">
                     <button className="my-5 p-2 rounded-xl text-black border border-black cursor-pointer hover:text-white hover:bg-[#2E78B6] hover:border-[#2E78B6]" onClick={handleLogin}>Sign in</button>
+                    <p onClick={() => {setShowEmailModal(true); setEmail("")}} className="cursor-pointer text-gray-500 hover:text-black">Verify your account</p>
+                    {showEmailModal && (
+                        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex flex-col items-center justify-center">
+                            <div className="bg-white p-6 rounded-t shadow max-w-sm w-full">
+                                <h3 className="text-xl font-bold mb-4">Enter email</h3>
+                                <input type="text" placeholder="email" className="w-full mb-4 border rounded" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                                <button type="submit" onClick={sendOTP} className="mb-2 w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 cursor-pointer"> Send OTP </button>
+                                <button onClick={() => {setShowEmailModal(false)}} className="mt-2 w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 cursor-pointer"> Cancel </button>
+                            </div>                    
+                            {showOtpModal && (
+                                <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
+                                    <div className="bg-white p-6 rounded-b shadow max-w-sm w-full">
+                                        <h3 className="text-xl font-bold mb-4">Enter OTP</h3>
+                                        <form onSubmit={handleVerifyOtp}>
+                                            <input type="text" placeholder="OTP" className="w-full mb-4 border rounded" value={otp} onChange={(e) => setOtp(e.target.value)} required />
+                                            <button type="submit" className="mb-2 w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 cursor-pointer"> Verify OTP </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
                     <p onClick={handleNoAccount} className="cursor-pointer text-gray-500 hover:text-black">Don't have an account yet? Signup</p>
                 </div>
             </div>
@@ -64,10 +124,4 @@ const Login = ({ onSwitchToSignup }) => {
     )
 }
 
-export default Login
-
-
-
-
-
-        
+export default Login;

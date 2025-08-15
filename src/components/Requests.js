@@ -3,7 +3,7 @@ import Header from "./Header.js";
 import People from "./People.js";
 import { BASE_URL } from "../utils/url.js";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequest, removeRequest } from "../utils/requestSlice.js";
+import { addRequest } from "../utils/requestSlice.js";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
@@ -29,23 +29,7 @@ const Requests = () => {
         requestsData();
     }, []);
 
-    const handleConnect = async(_id, status) => {
-        try{
-            console.log(status, _id);
-            const res = await axios.patch(BASE_URL+"request/review/" + status + "/" + _id, {}, {
-                withCredentials: true,
-            })
-            dispatch(removeRequest(_id));
-        }
-        catch(err){
-            console.log(err.message);
-            
-        }
-    }
-
-    if(requests === null) { 
-        console.log("req length 0");
-        
+    if(requests === null) {         
         return (
             <div>
                 <Header />

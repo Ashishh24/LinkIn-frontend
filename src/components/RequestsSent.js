@@ -31,24 +31,7 @@ const RequestsSent = () => {
         requestsSentData();
     }, []);
 
-    //need to modify
-    const handleConnect = async(_id, status) => {
-        try{
-            console.log(status, _id);
-            const res = await axios.patch(BASE_URL+"request/review/" + status + "/" + _id, {}, {
-                withCredentials: true,
-            })
-            dispatch(removeRequest(_id));
-        }
-        catch(err){
-            console.log(err.message);
-            
-        }
-    }
-
-    if(requestsSent === null) { 
-        console.log("req length 0");
-        
+    if(requestsSent === null) {
         return (
             <div>
                 <Header />

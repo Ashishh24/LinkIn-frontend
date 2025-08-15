@@ -43,7 +43,6 @@ const EditProfile = () => {
             dispatch(addUser(user));
         }
         catch(err) {
-            
             console.log(err.message);
         }
     }
@@ -88,15 +87,22 @@ const EditProfile = () => {
         navigate("/profile");
     }
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
-        if (file) {
-        const previewURL = URL.createObjectURL(file);
-        setProfilePhoto(previewURL);
+        
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("image", file);
+        try {
+            const res = await axios.post( BASE_URL+"upload", formData );
+            setProfilePhoto(res.data.imageUrl); // show new image
+        } catch (err) {
+            console.error("Upload failed:", err);
+            alert("Image upload failed!");
         }
+        e.target.value = "";
     };
-
-
 
     return (
         <div>
@@ -197,7 +203,7 @@ const EditProfile = () => {
                             />                     
                             <button
                                 onClick={() => fileInputRef.current.click()}
-                                className="mt-2 p-3 border float-end rounded-full text-sm cursor-pointer hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-blue-800">
+                                className="mt-2 p-3 border float-end rounded-full text-sm cursor-pointer hover:bg-blue-500 hover:text-white">
                                 Change Image
                             </button>
                         </div>
