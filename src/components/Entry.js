@@ -10,7 +10,7 @@ const Entry = () => {
     return (
         <div className="flex h-[100vh] items-center justify-center">
             <div className="text-center mx-auto p-7 w-[100%] md:w-[40%] ">
-                <h1 className="text-4xl pb-6">Welcome to LinkIn!</h1>
+                <h1 className="text-4xl pb-6">Welcome to LinkInn!</h1>
                 <div className="flex flex-col m-10">
                     <button onClick={() => setShowAbout(true)} style={{ margin: "10px" }} className="border px-5 py-2 bg-red-700 rounded-xl text-white cursor-pointer hover:bg-red-600">
                         About

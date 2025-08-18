@@ -49,7 +49,7 @@ const People = ({ data, type }) => {
                                 <button className="bg-gray-400 text-white px-5 py-2 rounded-3xl" disabled>
                                     Friends
                                 </button>
-                                <Link to="/chat/:toUserId">
+                                <Link to={"/chat/"+data._id}>
                                     <button className="bg-green-400 text-white px-5 py-2 rounded-3xl cursor-pointer hover:bg-green-700">
                                         Chat
                                     </button>

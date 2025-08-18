@@ -18,14 +18,13 @@ import Chat from "./components/Chat";
 
 const App = () => {
   return (
-    // <Provider store={appStore}>
-    //   <Toaster position="top-center" reverseOrder={false} />
-    //   <div>
-    //     <User />
-    //     <Outlet />
-    //   </div>
-    // </Provider>
-    1
+    <Provider store={appStore}>
+      <Toaster position="top-center" reverseOrder={false} />
+      <div>
+        <User />
+        <Outlet />
+      </div>
+    </Provider>
   )
 }
 
@@ -72,18 +71,14 @@ const appRouter = createBrowserRouter([
         path:"/profile/:_id",
         element: <ViewProfile />,
       },
+      {
+        path:"/chat/:targetUserId",
+        element: <Chat />
+      }
     ]
   }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-// root.render(<RouterProvider router={appRouter} />);
-
-
-const name = {
-  _id: 1,
-  firstName: "Ashish",
-  lastName: "Anand"
-}
-root.render(<Chat data={name}/>)
+root.render(<RouterProvider router={appRouter} />);
