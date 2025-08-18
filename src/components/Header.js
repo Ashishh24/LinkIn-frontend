@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../../src/utils/userSlice.js";
-import { BASE_URL } from "../utils/url.js";
+import { BASE_URL } from "../utils/url";
 import toast from "react-hot-toast";
 import { clearConnections } from "../utils/connectionSlice.js";
 import { clearRequests } from "../utils/requestSlice";

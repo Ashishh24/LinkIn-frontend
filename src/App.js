@@ -14,17 +14,18 @@ import { Toaster } from "react-hot-toast";
 import Entry from "./components/Entry";
 import ViewProfile from "./components/ViewProfile";
 import RequestsSent from "./components/RequestsSent";
+import Chat from "./components/Chat";
 
 const App = () => {
-  
   return (
-    <Provider store={appStore}>
-      <Toaster position="top-center" reverseOrder={false} />
-      <div>
-        <User />
-        <Outlet />
-      </div>
-    </Provider>
+    // <Provider store={appStore}>
+    //   <Toaster position="top-center" reverseOrder={false} />
+    //   <div>
+    //     <User />
+    //     <Outlet />
+    //   </div>
+    // </Provider>
+    1
   )
 }
 
@@ -77,4 +78,12 @@ const appRouter = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(<RouterProvider router={appRouter} />);
+// root.render(<RouterProvider router={appRouter} />);
+
+
+const name = {
+  _id: 1,
+  firstName: "Ashish",
+  lastName: "Anand"
+}
+root.render(<Chat data={name}/>)

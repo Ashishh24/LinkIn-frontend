@@ -3,6 +3,7 @@ import { removeFeed } from "../utils/feedSlice";
 import axios from "axios";
 import { BASE_URL } from "../utils/url";
 import { updateRequestStatus } from "../utils/feedSlice";
+import { Link } from "react-router-dom";
 
 const People = ({ data, type }) => {
     const {_id, firstName, lastName, bio, profilePhoto} = data;
