@@ -23,7 +23,8 @@ const Login = ({ onSwitchToSignup }) => {
             const res = await axios.post(BASE_URL+"login", {
                 email, password
             }, { withCredentials: true });
-            dispatch(addUser(res.data));
+            dispatch(addUser(res.data.user));
+            localStorage.setItem("token", res.data.token);
             toast.success("Login successful!");
             navigate("/home");
         }
