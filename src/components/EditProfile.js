@@ -37,7 +37,7 @@ const EditProfile = () => {
     const fetchUser = async() => {
         if(userData) return;
         try {
-            const user = await axios.get(BASE_URL+"profile/view", {
+            const user = await axios.get(BASE_URL+"/profile/view", {
                 withCredentials: true,
             });
             dispatch(addUser(user));
@@ -64,7 +64,7 @@ const EditProfile = () => {
                 about: about,
                 skills: skills,
             }));
-            const res = await axios.patch(BASE_URL+"profile/edit", {
+            const res = await axios.patch(BASE_URL+"/profile/edit", {
                 firstName: capitalizeFirstLetter(firstName),
                 lastName: capitalizeFirstLetter(lastName),
                 gender: gender,

@@ -16,7 +16,7 @@ const RequestsSent = () => {
     const requestsSentData = async () => {
         if(requestsSent) return;
         try {
-            const res = await axios.get(BASE_URL+"profile/connectionRequestSent", {
+            const res = await axios.get(BASE_URL+"/profile/connectionRequestSent", {
                 withCredentials: true,
             });
             console.log(res)

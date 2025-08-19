@@ -20,7 +20,7 @@ const Header = () => {
 
     const handleLogout = async () => {
         try {
-            const res = await axios.post(BASE_URL+"logout", {}, {
+            const res = await axios.post(BASE_URL+"/logout", {}, {
                 withCredentails: true
             });
             dispatch(removeUser());

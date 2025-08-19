@@ -22,7 +22,7 @@ const ViewProfile = () => {
     const handleConnect = async(_id, status) => {
         try{
             console.log(status, _id);
-            const res = await axios.patch(BASE_URL+"request/review/" + status + "/" + _id, {}, {
+            const res = await axios.patch(BASE_URL+"/request/review/" + status + "/" + _id, {}, {
                 withCredentials: true,
             })
             dispatch(removeRequest(_id));

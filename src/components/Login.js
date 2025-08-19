@@ -20,7 +20,7 @@ const Login = ({ onSwitchToSignup }) => {
 
     const handleLogin = async () => {
         try{
-            const res = await axios.post(BASE_URL+"login", {
+            const res = await axios.post(BASE_URL+"/login", {
                 email, password
             }, { withCredentials: true });
             dispatch(addUser(res.data.user));
@@ -39,7 +39,7 @@ const Login = ({ onSwitchToSignup }) => {
 
     const sendOTP = async() => {
         try {
-            const res = await axios.post(`${BASE_URL}send-otp`, { email });
+            const res = await axios.post(`${BASE_URL}/send-otp`, { email });
             console.log(res.data);
             if(res.status === 200){
                 toast.success(res.data.message);

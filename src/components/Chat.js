@@ -19,8 +19,8 @@ const Chat = () => {
 
     const fetchTargetUser = async () => {
         try {
-            console.log(`${BASE_URL}profile/view/${targetUserId}`);
-            const res = await axios(`${BASE_URL}profile/view/${targetUserId}`);
+            console.log(`${BASE_URL}/profile/view/${targetUserId}`);
+            const res = await axios(`${BASE_URL}/profile/view/${targetUserId}`);
             setTargetUser(res.data.data);
             console.log(res?.data?.data);
             

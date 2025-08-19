@@ -29,16 +29,16 @@ const FindPeople = () => {
     const fetchData = async() => {
         if(connections && requests && feed && requestsSent) return;
         try {
-            const resConnection = await axios.get(BASE_URL+"user/connections", {
+            const resConnection = await axios.get(BASE_URL+"/user/connections", {
                 withCredentials: true,
             });
-            const resRequest = await axios.get(BASE_URL+"user/connectionRequest", {
+            const resRequest = await axios.get(BASE_URL+"/user/connectionRequest", {
                 withCredentials: true,
             });
-            const resFeed = await axios.get(BASE_URL+"user/feed", {
+            const resFeed = await axios.get(BASE_URL+"/user/feed", {
                 withCredentials: true,
             });
-            const resRequestSent = await axios.get(BASE_URL+"profile/connectionRequestSent", {
+            const resRequestSent = await axios.get(BASE_URL+"/profile/connectionRequestSent", {
                 withCredentials: true,
             });            
             dispatch(addConnection(resConnection.data.data));

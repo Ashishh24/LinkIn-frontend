@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux";
-import { removeFeed } from "../utils/feedSlice";
 import axios from "axios";
 import { BASE_URL } from "../utils/url";
 import { updateRequestStatus } from "../utils/feedSlice";
@@ -12,7 +11,7 @@ const People = ({ data, type }) => {
 
     const sendRequest = async(_id) => {
         try{
-        const res = await axios.post(BASE_URL+"request/send/connect/" + _id, {}, { withCredentials: true } )
+        const res = await axios.post(BASE_URL+"/request/send/connect/" + _id, {}, { withCredentials: true } )
         dispatch(updateRequestStatus({userId: _id, status: "sent"}))
         }
         catch(err){
@@ -23,7 +22,7 @@ const People = ({ data, type }) => {
     const handleConnect = async(_id, status) => {
         try{
             console.log(status, _id);
-            const res = await axios.patch(BASE_URL+"request/review/" + status + "/" + _id, {}, {
+            const res = await axios.patch(BASE_URL+"/request/review/" + status + "/" + _id, {}, {
                 withCredentials: true,
             })
             const msg = `Request ${status}ed successfully 😀`;

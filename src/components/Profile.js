@@ -39,7 +39,7 @@ const Profile = () => {
 
     const handleDelete = async() => {
         try {
-            const res = await axios.delete(BASE_URL+"profile/delete");
+            const res = await axios.delete(BASE_URL+"/profile/delete");
             toast.success("Profile deleted sucessfully!!");
             navigate("/");
         }
