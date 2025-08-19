@@ -35,7 +35,7 @@ const Signup = ({ onSwitchToLogin }) => {
             const res = await axios.post(BASE_URL+"signup", {
                 firstName, lastName, email, password
             });
-            // toast.success("Account created Successfully!! Login to continue");
+            toast.success("Account created Successfully!! Login to continue");
             // onSwitchToLogin();
             // setMessage(res.data.message);
             setShowOtpModal(true);

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addRequestSent, removeRequestSent } from "../utils/requestSentSlice.js";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
 
 const RequestsSent = () => {
     const requestsSent = useSelector((store) => store.requestsSent);
@@ -23,6 +24,7 @@ const RequestsSent = () => {
             console.log(res.data.data)
         }
         catch(err) {
+            toast.error("Unable to fetch!!")
             console.log(err.message);
         }
     }

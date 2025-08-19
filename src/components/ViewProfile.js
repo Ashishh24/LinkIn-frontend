@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { BASE_URL } from "../utils/url";
 import { removeRequest } from "../utils/requestSlice";
+import toast from "react-hot-toast";
 
 const ViewProfile = () => {
     const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const ViewProfile = () => {
             setIsPendingReq(false);
         }
         catch(err){
+            toast.error("Unable to fetch profile!!")
             console.log(err.message);
         }
     }

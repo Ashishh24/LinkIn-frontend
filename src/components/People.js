@@ -4,14 +4,20 @@ import axios from "axios";
 import { BASE_URL } from "../utils/url";
 import { updateRequestStatus } from "../utils/feedSlice";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const People = ({ data, type }) => {
     const {_id, firstName, lastName, bio, profilePhoto} = data;
     const dispatch = useDispatch();
 
     const sendRequest = async(_id) => {
+        try{
         const res = await axios.post(BASE_URL+"request/send/connect/" + _id, {}, { withCredentials: true } )
         dispatch(updateRequestStatus({userId: _id, status: "sent"}))
+        }
+        catch(err){
+
+        }
     }
 
     const handleConnect = async(_id, status) => {
@@ -20,11 +26,13 @@ const People = ({ data, type }) => {
             const res = await axios.patch(BASE_URL+"request/review/" + status + "/" + _id, {}, {
                 withCredentials: true,
             })
+            const msg = `Request ${status}ed successfully 😀`;
+            toast.success(msg);
             dispatch(removeRequest(_id));
         }
         catch(err){
+            toast.error(err.message || err.response.data.message);
             console.log(err.message);
-            
         }
     }
 

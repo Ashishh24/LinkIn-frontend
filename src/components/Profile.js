@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/url";
+import toast from "react-hot-toast";
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -39,10 +40,11 @@ const Profile = () => {
     const handleDelete = async() => {
         try {
             const res = await axios.delete(BASE_URL+"profile/delete");
-            toast.message("Profile deleted sucessfully!!");
+            toast.success("Profile deleted sucessfully!!");
             navigate("/");
         }
         catch(err){
+            toast.error(err.message || err.response.data.message)
             console.log(err.message);
         }
     }

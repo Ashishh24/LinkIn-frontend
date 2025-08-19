@@ -28,7 +28,7 @@ const Login = ({ onSwitchToSignup }) => {
             navigate("/home");
         }
         catch(err){
-            toast.error(err?.response?.data?.message || "Something went wrong!!");
+            toast.error(err?.message || err?.response?.data?.message || "Something went wrong!!");
         }
     }
 

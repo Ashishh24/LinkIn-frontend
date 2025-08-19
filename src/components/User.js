@@ -27,7 +27,7 @@ const User = () => {
             else {
                 <Error />
             }
-            console.log(err.message);
+            // console.log(err.message);
         }
     }
 

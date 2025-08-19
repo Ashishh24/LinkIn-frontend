@@ -9,6 +9,7 @@ import People from "./People";
 import Header from "./Header";
 import { BASE_URL } from "../utils/url";
 import { useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const FindPeople = () => {
     const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const FindPeople = () => {
             dispatch(addRequestSent(resRequestSent.data.data));
         }
         catch (err) {
-            toast.error(err.response.data.message);
+            toast.error(err.message || err?.response?.data?.message || "Something went wrong");
         }
     }
 

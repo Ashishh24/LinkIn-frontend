@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addRequest } from "../utils/requestSlice.js";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Requests = () => {
     const requests = useSelector((store) => store.requests);
@@ -21,6 +22,7 @@ const Requests = () => {
             dispatch(addRequest(res.data.data));
         }
         catch(err) {
+            toast.error("Unable to fetch Connection Requests!!")
             console.log(err.message);
         }
     }
