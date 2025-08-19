@@ -1,7 +1,7 @@
 import axios from "axios";
 import { logo } from "../utils/links";
 import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../../src/utils/userSlice.js";
 import { BASE_URL } from "../utils/url";
