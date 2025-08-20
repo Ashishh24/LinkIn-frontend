@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { clearConnections } from "../utils/connectionSlice.js";
 import { clearRequests } from "../utils/requestSlice";
 import { clearFeed } from "../utils/feedSlice.js";
+import { clearRequestsSent } from "../utils/requestSentSlice";
 
 const Header = () => {
     const [searchText, setSearchText] = useState("");
@@ -27,6 +28,7 @@ const Header = () => {
             dispatch(clearFeed());
             dispatch(clearConnections());
             dispatch(clearRequests());
+            dispatch(clearRequestsSent());
             toast.success("You have been successfully logged out 👍");
             navigate("/");
         }
@@ -46,7 +48,7 @@ const Header = () => {
     if (!user) return null;
 
     return (
-        <div className="flex h-20 items-center justify-between m-auto">
+        <div className="flex h-[10vh] items-center justify-between m-auto">
             <div className="w-[60%] flex">
                 <div className="w-[33%]">
                     <Link to="/home"><img className="w-15 mx-auto" src={logo} ></img></Link>
@@ -60,7 +62,7 @@ const Header = () => {
                                 </svg>
                             </div>
                             <input type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} className=" w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." />
-                            <button type="submit" className="hidden sm:block text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-[#2E78B6] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+                            <button type="submit" className=" cursor-pointer hidden sm:block text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-[#2E78B6] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
 
                             {/* Icon Button for mobile */}
                             <button

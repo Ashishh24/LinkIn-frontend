@@ -3,7 +3,7 @@ import Header from "./Header.js";
 import People from "./People.js";
 import { BASE_URL } from "../utils/url.js";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequestSent, removeRequestSent } from "../utils/requestSentSlice.js";
+import { addRequestSent } from "../utils/requestSentSlice.js";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
@@ -39,7 +39,7 @@ const RequestsSent = () => {
                 <Header />
                 <h1 className="font-bold text-2xl flex justify-center my-5">You haven't sent request to anyone. Connect with someone.</h1>
                 <div className="flex justify-center items-center">
-                    <button onClick={() => {navigate("/add")}} className="my-5 flex justify-center items-center w-[50%] px-5 py-2 rounded-full border cursor-pointer hover:bg-blue-500 hover:text-white">Connect</button>
+                    <button onClick={() => {navigate("/add", {state: ""})}} className="my-5 flex justify-center items-center w-[50%] px-5 py-2 rounded-full border cursor-pointer hover:bg-blue-500 hover:text-white">Connect</button>
                 </div>
             </div>
         )

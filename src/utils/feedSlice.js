@@ -7,11 +7,6 @@ const feedSlice = createSlice({
         addFeed: (state, action) => {
             return action.payload;
         },
-        // removeFeed: (state, action) => {
-        //     if(state.length === 1) return null;
-        //     const pendingFeed = state.filter((f) => f._id !== action.payload);
-        //     return pendingFeed;
-        // },
         updateRequestStatus: (state, action) => {
             const { userId, status } = action.payload;
             const person = state.find(p => p._id === userId);

@@ -29,7 +29,7 @@ const Login = ({ onSwitchToSignup }) => {
             navigate("/home");
         }
         catch(err){
-            toast.error(err?.message || err?.response?.data?.message || "Something went wrong!!");
+            toast.error(err?.response?.data?.message || err.message || "Something went wrong!!");
         }
     }
 
@@ -40,16 +40,14 @@ const Login = ({ onSwitchToSignup }) => {
     const sendOTP = async() => {
         try {
             const res = await axios.post(`${BASE_URL}/send-otp`, { email });
-            console.log(res.data);
-            if(res.status === 200){
+            if(res.data.message === "OTP sent successfully!"){
                 toast.success(res.data.message);
-                setShowEmailModal(false);
-            }
-            else{
-                toast.success("OTP sent successfully");
                 setShowOtpModal(true);
                 setOtp("");
-                setEmail("");
+            }
+            else{
+                toast.success(res?.data?.message);
+                setShowEmailModal(false);
             }
         }
         catch(err){
@@ -57,18 +55,16 @@ const Login = ({ onSwitchToSignup }) => {
         }
     }
 
-    const handleVerifyOtp = async (e) => {
-        e.preventDefault();
+    const handleVerifyOtp = async (email) => {
         try {
-            const res = await axios.post(`${BASE_URL}verify-otp`, {
+            const res = await axios.post(`${BASE_URL}/verify-otp`, {
                 email, otp
             });
             setShowOtpModal(false);
             setShowEmailModal(false);
             toast.success("Email verified!! Login to continue");
-            onSwitchToLogin();
         } catch (err) {
-            setMessage(err.response?.data?.message || "OTP verification failed");
+            toast.error(err.response?.data?.message || "OTP verification failed");
         }
     };
 
@@ -110,10 +106,8 @@ const Login = ({ onSwitchToSignup }) => {
                                 <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
                                     <div className="bg-white p-6 rounded-b shadow max-w-sm w-full">
                                         <h3 className="text-xl font-bold mb-4">Enter OTP</h3>
-                                        <form onSubmit={handleVerifyOtp}>
-                                            <input type="text" placeholder="OTP" className="w-full mb-4 border rounded" value={otp} onChange={(e) => setOtp(e.target.value)} required />
-                                            <button type="submit" className="mb-2 w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 cursor-pointer"> Verify OTP </button>
-                                        </form>
+                                        <input type="text" placeholder="OTP" className="w-full mb-4 border rounded" value={otp} onChange={(e) => setOtp(e.target.value)} required />
+                                        <button type="submit" onClick={() => handleVerifyOtp(email)} className="mb-2 w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 cursor-pointer"> Verify OTP </button>
                                     </div>
                                 </div>
                             )}

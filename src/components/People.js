@@ -4,18 +4,21 @@ import { BASE_URL } from "../utils/url";
 import { updateRequestStatus } from "../utils/feedSlice";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { removeRequest } from "../utils/requestSlice";
 
-const People = ({ data, type }) => {
+const People = ({ data, type, requestId }) => {
     const {_id, firstName, lastName, bio, profilePhoto} = data;
+    const reqId = requestId;
     const dispatch = useDispatch();
 
     const sendRequest = async(_id) => {
         try{
-        const res = await axios.post(BASE_URL+"/request/send/connect/" + _id, {}, { withCredentials: true } )
+        const res = await axios.post(BASE_URL+"/request/send/connect/" + _id, {}, { withCredentials: true } );
+        toast.success("Request sent successfully!!")
         dispatch(updateRequestStatus({userId: _id, status: "sent"}))
         }
         catch(err){
-
+            toast.error(err.response.data.message);
         }
     }
 
@@ -65,8 +68,8 @@ const People = ({ data, type }) => {
                         )}
                         {type === "request" && (
                             <div className="flex gap-4">
-                                <button onClick={() => handleConnect(_id,"accept")} className="border rounded-3xl border-[#ccc] py-2 px-5 hover:bg-green-500 hover:text-white">Accept</button>
-                                <button onClick={() => handleConnect(_id,"reject")} className="border rounded-3xl border-[#ccc] py-2 px-5 hover:bg-red-500 hover:text-white">Reject</button>
+                                <button onClick={() => handleConnect(reqId,"accept")} className="border rounded-3xl border-[#ccc] py-2 px-5 hover:bg-green-500 hover:text-white">Accept</button>
+                                <button onClick={() => handleConnect(reqId,"reject")} className="cursor-pointer border rounded-3xl border-[#ccc] py-2 px-5 hover:bg-red-500 hover:text-white">Reject</button>
                             </div>
                         )}
                         {type === "feed" && (
@@ -78,7 +81,7 @@ const People = ({ data, type }) => {
                                     </button>
                                 ) : (
                                     <button
-                                        className="border border-[#ccc] hover:bg-blue-600 hover:text-white px-5 py-2 rounded-3xl"
+                                        className="border cursor-pointer border-[#ccc] hover:bg-blue-600 hover:text-white px-5 py-2 rounded-3xl"
                                         onClick={() => sendRequest(data._id)}
                                     >
                                         Connect

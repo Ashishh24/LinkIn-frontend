@@ -25,7 +25,6 @@ const Connections = () => {
     }
 
     useEffect(() => {
-        console.log("calling useEffect");
         connectionsData();
     }, []);
 

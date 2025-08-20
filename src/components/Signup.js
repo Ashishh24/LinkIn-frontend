@@ -19,6 +19,7 @@ const Signup = ({ onSwitchToLogin }) => {
     const [message, setMessage] = useState("");
     
     const navigate = useNavigate();
+    const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
     const handleSignup = async() => {
         if (!firstName || !lastName || !email || !password || !confirmPassword) {
@@ -32,12 +33,14 @@ const Signup = ({ onSwitchToLogin }) => {
             return;
         }
         try{
-            const res = await axios.post(BASE_URL+"/signup", {
-                firstName, lastName, email, password
-            });
+            const signupData = {
+                firstName: capitalizeFirstLetter(firstName),
+                lastName: capitalizeFirstLetter(lastName), 
+                email, 
+                password
+            }
+            const res = await axios.post(BASE_URL+"/signup", signupData);
             toast.success("Account created Successfully!! Login to continue");
-            // onSwitchToLogin();
-            // setMessage(res.data.message);
             setShowOtpModal(true);
         }
         catch (err) {
@@ -52,7 +55,7 @@ const Signup = ({ onSwitchToLogin }) => {
     const handleVerifyOtp = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${BASE_URL}verify-otp`, {
+            const res = await axios.post(`${BASE_URL}/verify-otp`, {
                 email, otp
             });
             setMessage(res.data.message);

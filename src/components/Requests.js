@@ -19,7 +19,7 @@ const Requests = () => {
             const res = await axios.get(BASE_URL+"/user/connectionRequest", {
                 withCredentials: true,
             });
-            dispatch(addRequest(res.data.data));
+            dispatch(addRequest(res.data.data));            
         }
         catch(err) {
             toast.error("Unable to fetch Connection Requests!!")
@@ -36,6 +36,7 @@ const Requests = () => {
             <div>
                 <Header />
                 <h1 className="font-bold text-2xl flex justify-center my-5">No Request found!!</h1>
+                <p className="text-sm text-center"><Link to="/requests/sent">See the people you have sent requests to...</Link></p>
             </div>
         )
     }
@@ -48,7 +49,7 @@ const Requests = () => {
             <p className="text-sm text-center"><Link to="/requests/sent">See the people you have sent requests to...</Link></p>
             {requests && <div>
                 {requests.map((request) => (
-                    <People key={request.fromUserID._id} data={request.fromUserID} type="request" />
+                    <People key={request.fromUserID._id} data={request.fromUserID} requestId={request._id} type="request" />
                 ))}
             </div>}
         </div>

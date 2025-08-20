@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/url";
 import toast from "react-hot-toast";
+import Header from "./Header";
+import axios from "axios";
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -33,25 +35,24 @@ const Profile = () => {
         navigate("/edit");
     }
 
-    const handleHome = () => {
-        navigate("/home");
-    }
-
     const handleDelete = async() => {
         try {
-            const res = await axios.delete(BASE_URL+"/profile/delete");
+            const res = await axios.delete(BASE_URL+"/profile/delete", {
+                withCredentials: true,
+            });
             toast.success("Profile deleted sucessfully!!");
-            navigate("/");
+            navigate("/");            
         }
         catch(err){
-            toast.error(err.message || err.response.data.message)
-            console.log(err.message);
+            console.log(err);
+            toast.error(err.response.data.message || err.message);
         }
     }
 
     return (
         <div>
-            <div className="bg-gradient-to-r from-indigo-800 to-blue-900 min-h-screen flex items-center justify-center p-4">
+            <Header />
+            <div className="bg-gradient-to-r from-indigo-800 to-blue-900 min-h-[90vh] flex items-center justify-center p-4">
                 <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full p-8 transition-all duration-300 animate-fade-in">
                     <div className="flex flex-col md:flex-row">
                     {/* Left Section */}
@@ -64,10 +65,6 @@ const Profile = () => {
                             onClick={handleEdit} 
                             className="mt-4 bg-indigo-800 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">
                             Edit Profile
-                        </button><button 
-                            onClick={handleHome} 
-                            className="mt-4 bg-indigo-800 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">
-                            Home
                         </button>
                         <button 
                             onClick={handleDelete} 
@@ -83,14 +80,14 @@ const Profile = () => {
                         About Me
                         </h2>
                         <p className="text-gray-700-300 mb-6">
-                        {userData.about}
+                        {userData.about ? userData.about : "--"}
                         </p>
 
                         <h2 className="text-xl font-semibold text-indigo-800 mb-4">
                         Skills
                         </h2>
                         <div className="flex flex-wrap gap-2 mb-6">
-                        {userData.skills.map(
+                        {userData.skills.length > 0 ? userData.skills.map(
                             (skill, idx) => (
                             <span
                                 key={idx}
@@ -99,7 +96,9 @@ const Profile = () => {
                                 {skill}
                             </span>
                             )
-                        )}
+                        )
+                        : <p>No skills added yet....</p>
+                        }
                         </div>
 
                         <h2 className="text-xl font-semibold text-indigo-800 mb-4">Contact Information</h2>
@@ -111,12 +110,12 @@ const Profile = () => {
                             </svg>
                             {userData.email}
                         </li>
-                        <li className="flex items-center">
+                        {userData.phone ? <li className="flex items-center">
                             <svg className="h-5 w-5 mr-2 text-indigo-800" fill="currentColor">
                                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                             </svg>
-                            {userData.phone}
-                        </li>
+                            userData.phone 
+                        </li>: null}
                         </ul>
                     </div>
                     </div>

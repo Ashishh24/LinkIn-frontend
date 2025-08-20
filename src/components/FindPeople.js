@@ -68,7 +68,6 @@ const FindPeople = () => {
     return (
         <div>
             <Header />
-            {console.log(filterCon, filterFeed, filterReq, filterReqSent)}
             <div className="space-y-4">
                 {/* Connections → No buttons */}
                 {filterCon?.map((p) => (
@@ -77,7 +76,7 @@ const FindPeople = () => {
 
                 {/* Requests → Accept / Reject */}
                 {filterReq?.map((p) => (
-                    <People key={p.fromUserID._id} data={p.fromUserID} type="request" />
+                    <People key={p.fromUserID._id} data={p.fromUserID} requestId={p._id} type="request" />
                 ))}
 
                 {/* Feed → Connect / Dismiss */}

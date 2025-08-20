@@ -55,7 +55,7 @@ const EditProfile = () => {
     
     const handleSubmit = async (e) => {
         try{
-            dispatch(updateUser({            
+            const editData = {            
                 firstName: capitalizeFirstLetter(firstName),
                 lastName: capitalizeFirstLetter(lastName),
                 gender: gender,
@@ -63,22 +63,19 @@ const EditProfile = () => {
                 profilePhoto: profilePhoto,
                 about: about,
                 skills: skills,
-            }));
-            const res = await axios.patch(BASE_URL+"/profile/edit", {
-                firstName: capitalizeFirstLetter(firstName),
-                lastName: capitalizeFirstLetter(lastName),
-                gender: gender,
-                phone: phone,
-                profilePhoto: profilePhoto,
-                about: about,
-                skills: skills,
-            }, {
+            }
+            dispatch(updateUser(editData));
+            const res = await axios.patch(BASE_URL+"/profile/edit", editData, {
                 withCredentials: true,
             });
+            console.log(res);
+            
             toast.success("Profile updated successfully!");
             navigate("/profile");
         }
         catch(err){
+            console.log(err);
+            
             toast.error(err?.response?.data?.message || err?.message || "Something went wrong");
         }
     }

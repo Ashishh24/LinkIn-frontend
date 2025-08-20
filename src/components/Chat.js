@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/url";
+import Header from "./Header";
 
 let socket;
 
@@ -66,29 +67,33 @@ const Chat = () => {
     }
 
     return (
-        <div className=" mx-auto my-10 border border-[#ccc] h-[70vh]">
-            {/* <h1 className="font-bold text-2xl flex justify-center border-b-1 border-[#ccc] p-3">{`${targetUser?.firstName} ${targetUser?.lastName}`}</h1> */}
-            <h1 className="font-bold text-2xl flex justify-center border-b-1 border-[#ccc] p-3">Chat</h1>
-            {/* all chat */}
-            <div className="flex-1 overflow-y-scroll p-3">
-                <div className="flex flex-col gap-2">
-                    {messages.map((msg, index) => (
-                        <div
-                            key={index}
-                            className={`max-w-[70%] border border-gray-400 rounded-lg p-2 ${
-                                msg.userId === user._id ? "self-end bg-green-200" : "self-start bg-white"
-                            }`}
-                        >
-                            <span className="block text-sm font-semibold">{msg.name}</span>
-                            <span>{msg.text}</span>
-                        </div>
-                    ))}
+        <div>
+            <Header />
+            <div className="md:w-[70%] mx-auto my-10 border border-[#ccc] min-h-[70vh]">
+                {/* <h1 className="font-bold text-2xl flex justify-center border-b-1 border-[#ccc] p-3">{`${targetUser?.firstName} ${targetUser?.lastName}`}</h1> */}
+                <h1 className="font-bold text-2xl flex justify-center border-b-1 border-[#ccc] p-3">Chat</h1>
+                {/* all chat */}
+                <div className="flex-1 overflow-y-scroll p-3">
+                    <div className="flex flex-col gap-2">
+                        {messages.map((msg, index) => (
+                            <div
+                                key={index}
+                                className={`max-w-[70%] border border-gray-400 rounded-lg p-2 ${
+                                    msg.userId === user._id ? "self-end bg-green-200" : "self-start bg-white"
+                                }`}
+                            >
+                                <span className="block text-sm font-semibold">{msg.name}</span>
+                                <span>{msg.text}</span>
+                            </div>
+                            
+                        ))}
+                    </div>
                 </div>
-            </div>
-            {/* {console.log(messages)} */}
-            <div className="border-t-1 border-[#ccc] p-3 flex justify-between gap-5">
-                <input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type a message..." className="border border-[#ccc] flex-1 p-2 rounded" />
-                <button onClick={sendMessage} className="border border-solid px-4 py-2 cursor-pointer rounded-lg bg-green-500 text-white hover:bg-green-700">Send</button>
+                {/* {console.log(messages)} */}
+                <div className="border-t-1 border-[#ccc] p-3 flex justify-between gap-5">
+                    <input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type a message..." className="border border-[#ccc] flex-1 p-2 rounded" />
+                    <button onClick={sendMessage} className="border border-solid px-4 py-2 cursor-pointer rounded-lg bg-green-500 text-white hover:bg-green-700">Send</button>
+                </div>
             </div>
         </div>
     )
