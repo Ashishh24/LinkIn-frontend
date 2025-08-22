@@ -40,7 +40,7 @@ const Signup = ({ onSwitchToLogin }) => {
                 password
             }
             const res = await axios.post(BASE_URL+"/signup", signupData);
-            toast.success("Account created Successfully!! Login to continue");
+            toast.success("OTP sent on email!");
             setShowOtpModal(true);
         }
         catch (err) {
@@ -63,7 +63,7 @@ const Signup = ({ onSwitchToLogin }) => {
             toast.success("Account created Successfully!! Login to continue");
             onSwitchToLogin();
         } catch (err) {
-            setMessage(err.response?.data?.message || "OTP verification failed");
+            toast.error(err.response?.data?.message || "OTP verification failed");
         }
     };
 

@@ -27,7 +27,8 @@ const Entry = () => {
                 {showAbout && (
                     <div className="modal-overlay" onClick={() => setShowAbout(false)}>
                     <div className="modal-contentAbout" onClick={(e) => e.stopPropagation()}>
-                        <h2 className="text-left md:text-xl fontttt">This is a personal project I built to enhance my skills in technology stack, e.g., React and Node.js. It helped me practice full-stack development and learn practical implementation of key features, e.g., user authentication, API integration, responsive design.</h2>
+                        <h1 className="text-center text-2xl m-2">About</h1>
+                        <h2 className="text-left ">This personal project was developed to strengthen my skills in technologies like React and Node.js. It allowed me to practice full-stack development while implementing core features such as user authentication, API integration, and responsive design. Through this, I gained hands-on experience in building scalable, user-friendly applications and deepened my understanding of practical software development workflows.</h2>
                     </div>
                     </div>
                 )}

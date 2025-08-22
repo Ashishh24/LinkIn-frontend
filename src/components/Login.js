@@ -24,7 +24,6 @@ const Login = ({ onSwitchToSignup }) => {
                 email, password
             }, { withCredentials: true });
             dispatch(addUser(res.data.user));
-            localStorage.setItem("token", res.data.token);
             toast.success("Login successful!");
             navigate("/home");
         }
