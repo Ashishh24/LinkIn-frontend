@@ -6,13 +6,13 @@ import requestReducer from "./requestSlice";
 import requestSentReducer from "./requestSentSlice";
 
 const appStore = configureStore({
-    reducer: {
-        user: userReducer,
-        feed: feedReducer,
-        connections: connectionReducer,
-        requests: requestReducer,
-        requestsSent: requestSentReducer,
-    },
+  reducer: {
+    user: userReducer,
+    feed: feedReducer,
+    connections: connectionReducer,
+    requests: requestReducer,
+    requestsSent: requestSentReducer,
+  },
 });
 
 export default appStore;
