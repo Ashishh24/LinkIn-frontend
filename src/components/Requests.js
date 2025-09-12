@@ -12,7 +12,6 @@ const Requests = () => {
   const requests = useSelector((store) => store.requests);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const requestsData = async () => {
     if (requests) return;
     try {

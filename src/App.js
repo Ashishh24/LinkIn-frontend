@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import Error from "./components/Error";
 import FindPeople from "./components/FindPeople";
@@ -14,18 +14,17 @@ import Entry from "./components/Entry";
 import ViewProfile from "./components/ViewProfile";
 import RequestsSent from "./components/RequestsSent";
 import Chat from "./components/Chat";
-import Premium from "./components/Premium";
 import Home from "./components/Home";
+import HelpChatbot from "./components/HelpChatbot";
 
 const App = () => {
+  const user = useSelector((store) => store.user);
   return (
-    <Provider store={appStore}>
-      <Toaster position="top-center" reverseOrder={false} />
-      <div>
-        <User />
-        <Outlet />
-      </div>
-    </Provider>
+    <div>
+      <User />
+      <Outlet />
+      {user && <HelpChatbot />}
+    </div>
   );
 };
 
@@ -79,14 +78,15 @@ const appRouter = createBrowserRouter([
         path: "/chat/:targetUserId",
         element: <Chat />,
       },
-      {
-        path: "/premium",
-        element: <Premium />,
-      },
     ],
   },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(<RouterProvider router={appRouter} />);
+root.render(
+  <Provider store={appStore}>
+    <Toaster position="top-center" reverseOrder={false} />
+    <RouterProvider router={appRouter} />
+  </Provider>
+);

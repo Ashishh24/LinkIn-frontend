@@ -5,6 +5,7 @@ import { updateUser } from "../utils/userSlice";
 import toast from "react-hot-toast";
 import { BASE_URL } from "../utils/url";
 import axios from "axios";
+import { uploadDp } from "../utils/mediaUpload";
 
 const EditProfile = () => {
   const userData = useSelector((store) => store.user);
@@ -86,17 +87,12 @@ const EditProfile = () => {
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
-
     if (!file) return;
-
-    const formData = new FormData();
-    formData.append("image", file);
     try {
-      const res = await axios.post(BASE_URL + "/upload/dp", formData);
-      setProfilePhoto(res.data.imageUrl); // show new image
+      const uploadedUrl = await uploadDp(file);
+      setProfilePhoto(uploadedUrl);
     } catch (err) {
-      console.error("Upload failed:", err);
-      alert("Image upload failed!");
+      toast.error(err.message || "Image upload failed!");
     }
     e.target.value = "";
   };

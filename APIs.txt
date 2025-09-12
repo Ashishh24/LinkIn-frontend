@@ -1,16 +1,21 @@
-POST - /signup
-POST - /login
-POST - /logout
+POST   - /signup
+POST   - /login
+POST   - /logout
 
-GET - /profile/view
-GET - /profile/view/:userID
-PATCH - /profile/edit
-PATCH - /profile/changePassword
-DELETE - 
+GET    - /profile/view
+GET    - /profile/view/:userID
+GET    - /profile/connectionRequestSent
+PATCH  - /profile/edit
+PATCH  - /profile/changePassword
+DELETE - /profile/delete
 
-POST - /request/send/:status/:userID
-POST - /request/review/:status/:requestID
+POST   - /request/send/:status/:userID
+PATCH  - /request/review/:status/:requestID
 
-GET - /user/connectionRequest
-GET - /user/connections
-GET - /user/feed
+POST   - /upload/dp
+POST   - /upload/post
+
+GET    - /user/connectionRequest
+GET    - /user/connections
+GET    - /user/posts
+GET    - /user/feed

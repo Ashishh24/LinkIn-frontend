@@ -5,11 +5,13 @@ import { BASE_URL } from "../utils/url";
 import toast from "react-hot-toast";
 import Header from "./Header";
 import axios from "axios";
+import PostCard from "./PostCard";
 
 const Profile = () => {
   const navigate = useNavigate();
   const userData = useSelector((store) => store.user);
-  const [posts, setPosts] = useState([]);
+  const [deleteProfile, setDeleteProfile] = useState(false);
+  const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
     const skillTags = document.querySelectorAll(".bg-indigo-100");
@@ -38,7 +40,7 @@ const Profile = () => {
         const res = await axios.get(`${BASE_URL}/user/posts`, {
           withCredentials: true,
         });
-        setPosts(res.data.posts || []);
+        setAllPosts(res.data.posts || []);
       } catch (err) {
         console.log(err);
         toast.error("Failed to fetch posts");
@@ -52,12 +54,16 @@ const Profile = () => {
     navigate("/edit");
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
+    setDeleteProfile(true);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
-      const res = await axios.delete(BASE_URL + "/profile/delete", {
+      await axios.delete(BASE_URL + "/profile/delete", {
         withCredentials: true,
       });
-      toast.success("Profile deleted sucessfully!!");
+      toast.success("Profile deleted successfully!!");
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -65,140 +71,168 @@ const Profile = () => {
     }
   };
 
+  // ✅ Update existing post
+  const updatePost = (updatedPost) => {
+    setAllPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post._id === updatedPost._id ? updatedPost : post
+      )
+    );
+  };
+
+  // ✅ Delete post
+  const deletePost = (postId) => {
+    setAllPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+  };
+
   return (
     <div>
       <Header />
-      <div className="bg-gradient-to-r from-indigo-800 to-blue-900 min-h-[90vh] flex flex-col items-center justify-center p-4">
-        <div className="flex bg-white rounded-xl shadow-2xl max-w-4xl w-full p-8 transition-all duration-300 animate-fade-in">
-          <div className="flex flex-col md:flex-row">
-            {/* Left Section */}
-            <div className="md:w-1/2 text-center mb-8 md:mb-0">
+      <div className="flex flex-col items-center p-6 space-y-10">
+        {/* Profile Section */}
+        <div className="w-[100%] lg:w-[80%] p-6 justify-center items-center">
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* Left */}
+            <div className="md:w-1/3 text-center">
               <img
                 src={userData?.profilePhoto}
-                className="rounded-full w-48 h-48 mx-auto mb-4 border-4 border-indigo-800 transition-transform duration-300 hover:scale-105"
+                className="rounded-full w-40 h-40 mx-auto mb-4"
               />
-              <h1 className="text-2xl font-bold text-indigo-800 mb-2">
+              <h1 className="text-2xl font-bold text-gray-800">
                 {userData?.firstName + " " + userData?.lastName}
               </h1>
               <p className="text-gray-600">{userData?.title}</p>
-              <div className="flex justify-center gap-5">
+              <div className="flex justify-center gap-4 mt-4">
                 <button
                   onClick={handleEdit}
-                  className="mt-4 bg-indigo-800 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">
+                  className="bg-indigo-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
                   Edit Profile
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="mt-4 bg-red-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-red-900 transition-colors duration-300">
+                  className="bg-red-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-red-700">
                   Delete Profile
                 </button>
               </div>
             </div>
 
-            {/* Right Section */}
-            <div className="md:w-2/3 md:pl-8">
-              <h2 className="text-xl font-semibold text-indigo-800 mb-4">
-                About Me
-              </h2>
-              <p className="text-gray-700-300 mb-6">
-                {userData?.about ? userData?.about : "--"}
-              </p>
-
-              <h2 className="text-xl font-semibold text-indigo-800 mb-4">
-                Skills
-              </h2>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {userData?.skills.length > 0 ? (
-                  userData?.skills.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm cursor-pointer">
-                      {skill}
-                    </span>
-                  ))
-                ) : (
-                  <p>No skills added yet....</p>
-                )}
+            {/* Right */}
+            <div className="md:w-2/3 space-y-6 text-gray-800">
+              <div>
+                <h2 className="text-lg font-semibold">About Me</h2>
+                <p>{userData?.about ? userData?.about : "--"}</p>
               </div>
 
-              <h2 className="text-xl font-semibold text-indigo-800 mb-4">
-                Contact Information
-              </h2>
-              <ul className="space-y-2 text-gray-700-300">
-                <li className="flex items-center">
-                  <svg
-                    className="h-5 w-5 mr-2 text-indigo-800"
-                    fill="currentColor">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
-                  {userData?.email}
-                </li>
-                {userData?.phone ? (
+              <div>
+                <h2 className="text-lg font-semibold">Skills</h2>
+                <div className="flex flex-wrap gap-2">
+                  {userData?.skills.length > 0 ? (
+                    userData?.skills.map((skill, idx) => (
+                      <span
+                        key={idx}
+                        className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm cursor-pointer">
+                        {skill}
+                      </span>
+                    ))
+                  ) : (
+                    <p>No skills added yet....</p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-lg font-semibold">Contact Information</h2>
+                <ul className="space-y-2 text-gray-700-300">
+                  {" "}
                   <li className="flex items-center">
+                    {" "}
                     <svg
                       className="h-5 w-5 mr-2 text-indigo-800"
                       fill="currentColor">
-                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                    </svg>
-                    {userData?.phone}
-                  </li>
-                ) : null}
-              </ul>
+                      {" "}
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />{" "}
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />{" "}
+                    </svg>{" "}
+                    {userData?.email}{" "}
+                  </li>{" "}
+                  {userData?.phone ? (
+                    <li className="flex items-center">
+                      {" "}
+                      <svg
+                        className="h-5 w-5 mr-2 text-indigo-800"
+                        fill="currentColor">
+                        {" "}
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />{" "}
+                      </svg>{" "}
+                      {userData?.phone}{" "}
+                    </li>
+                  ) : null}{" "}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* My Posts Section */}
-        <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full p-6 transition-all duration-300 animate-fade-in">
-          <h2 className="text-xl font-semibold text-indigo-800 mb-4">
+        {deleteProfile && (
+          <div className="modal-overlay">
+            <div className="modal-contentAbout">
+              <h1 className="text-center text-2xl m-2">Confirm Delete</h1>
+              <br />
+              <div className="flex gap-4 text-end justify-between">
+                <button
+                  onClick={() => setDeleteProfile(false)}
+                  className="bg-indigo-600 text-white cursor-pointer px-4 py-2 rounded-lg hover:bg-indigo-700">
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleConfirmDelete()}
+                  className="bg-red-600 text-white cursor-pointer px-4 py-2 rounded-lg hover:bg-red-700">
+                  Confirm Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <style>{`
+          .modal-overlay {
+              position: fixed;
+              top: 0; left: 0;
+              width: 100%; height: 100%;
+              background: rgba(0,0,0,0.5);
+              display: flex; 
+              justify-content: center; 
+              align-items: center;
+          }
+          .modal-contentAbout {
+              background: white;
+              padding: 20px;
+              border-radius: 10px;
+              // width: 250px;
+              text-align: left;
+          }
+        `}</style>
+
+        <div className="w-full p-6">
+          <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
             My Posts
           </h2>
-          {posts.length > 0 ? (
-            posts.map((post) => (
-              <div
-                key={post._id}
-                className="border-b last:border-b-0 border-gray-200 py-3">
-                <p className="text-gray-800">{post.content}</p>
-                {post.media && post.media.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {post.media.map((m, idx) =>
-                      m.type.startsWith("image") ? (
-                        <img
-                          key={idx}
-                          src={m.url}
-                          alt=""
-                          className="w-32 h-32 object-cover rounded"
-                        />
-                      ) : (
-                        <video
-                          key={idx}
-                          src={m.url}
-                          controls
-                          className="w-48 h-32 rounded"
-                        />
-                      )
-                    )}
-                  </div>
-                )}
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">You haven't posted anything yet.</p>
-          )}
+          <div className="my-4 w-[100%] m-4 sm:w-[60%] justify-center items-center mx-auto">
+            {allPosts.length > 0 ? (
+              allPosts.map((post) => (
+                <div key={post._id}>
+                  <PostCard
+                    post={post}
+                    onPostUpdated={updatePost}
+                    onPostDeleted={deletePost}
+                  />
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">You haven't posted anything yet.</p>
+            )}
+          </div>
         </div>
-
-        <style>
-          {`
-                    @keyframes fadeIn {
-                        from { opacity: 0; transform: translateY(-10px); }
-                        to { opacity: 1; transform: translateY(0); }
-                    }
-                    .animate-fade-in {
-                        animation: fadeIn 0.5s ease-out forwards;
-                    }
-                    `}
-        </style>
       </div>
     </div>
   );

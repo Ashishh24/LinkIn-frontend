@@ -7,7 +7,7 @@ import { removeUser } from "../../src/utils/userSlice.js";
 import { BASE_URL } from "../utils/url";
 import toast from "react-hot-toast";
 import { clearConnections } from "../utils/connectionSlice.js";
-import { clearRequests } from "../utils/requestSlice";
+import { addRequest, clearRequests } from "../utils/requestSlice";
 import { clearFeed } from "../utils/feedSlice.js";
 import { clearRequestsSent } from "../utils/requestSentSlice";
 import { Home, HomeIcon, MessageCircle, User } from "lucide-react";
@@ -49,6 +49,36 @@ const Header = () => {
     val.preventDefault();
     navigate("/add", { state: { searchText } });
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      if (requests && requests.length > 0) return; // don’t refetch if already loaded
+      try {
+        const res = await axios.get(BASE_URL + "/user/connectionRequest", {
+          withCredentials: true,
+        });
+        dispatch(addRequest(res.data.data));
+      } catch (err) {
+        toast.error("Unable to fetch Connection Requests!!");
+        console.log(err.message);
+      }
+    };
+
+    fetchRequests();
+  }, []);
 
   if (!user) return null;
 
@@ -116,17 +146,17 @@ const Header = () => {
 
       {/* Right section */}
       <div className="w-[40%] flex justify-end gap-3 items-center mr-3 md:mr-10">
-        <Link to="/home" className="block m-3 px-4 py-2 hover:bg-gray-100">
+        <Link to="/home" className="block m-3 px-2 py-1 hover:bg-gray-100">
           <Home className="w-6 h-6 text-indigo-500 mb-2" />
         </Link>
         <Link
           to="/chat"
-          className="hidden md:block md:m-3 px-4 py-2 hover:bg-gray-100">
+          className="hidden md:block md:m-3 px-2 py-1 hover:bg-gray-100">
           <MessageCircle className="w-6 h-6 text-indigo-500 mb-2" />
         </Link>
         <Link
           to="/requests"
-          className="relative hidden lg:block items-center md:m-3 px-4 py-1 hover:bg-gray-100">
+          className="relative hidden lg:block items-center md:m-3 px-2 py-1 hover:bg-gray-100">
           <User className="w-6 h-6 text-indigo-500 mb-2" />
           {requests?.length > 0 && (
             <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -134,7 +164,7 @@ const Header = () => {
             </span>
           )}
         </Link>
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <button onClick={() => setMenuOpen(!menuOpen)}>
             <img
               src={user.profilePhoto}
@@ -142,9 +172,7 @@ const Header = () => {
             />
           </button>
           {menuOpen && (
-            <div
-              ref={dropdownRef}
-              className="absolute right-0 top-10 w-48 border bg-white shadow-lg rounded-md z-50 text-black">
+            <div className="absolute right-0 top-10 w-48 border bg-white shadow-lg rounded-md z-50 text-black">
               <Link
                 to="/chat"
                 className="block md:hidden px-4 py-2 hover:bg-gray-100">
