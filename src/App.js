@@ -11,7 +11,6 @@ import EditProfile from "./components/EditProfile";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 import Entry from "./components/Entry";
-import ViewProfile from "./components/ViewProfile";
 import RequestsSent from "./components/RequestsSent";
 import Chat from "./components/Chat";
 import Home from "./components/Home";
@@ -67,10 +66,6 @@ const appRouter = createBrowserRouter([
         element: <RequestsSent />,
       },
       {
-        path: "/profile/:_id",
-        element: <ViewProfile />,
-      },
-      {
         path: "/chat",
         element: <Chat />,
       },
@@ -86,7 +81,28 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <Provider store={appStore}>
-    <Toaster position="top-center" reverseOrder={false} />
+    <Toaster
+      position="top-center"
+      reverseOrder={false}
+      toastOptions={{
+        style: {
+          fontSize: "14px",
+          padding: "12px 20px",
+        },
+        success: {
+          style: {
+            background: "#d1fae5",
+            color: "#065f46",
+          },
+        },
+        error: {
+          style: {
+            background: "#fee2e2",
+            color: "#991b1b",
+          },
+        },
+      }}
+    />
     <RouterProvider router={appRouter} />
   </Provider>
 );

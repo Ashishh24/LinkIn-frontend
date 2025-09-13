@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { BASE_URL } from "../utils/url";
 import axios from "axios";
 import { uploadDp } from "../utils/mediaUpload";
+import { Eye, EyeOff } from "lucide-react";
 
 const EditProfile = () => {
   const userData = useSelector((store) => store.user);
@@ -13,14 +14,19 @@ const EditProfile = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  const [firstName, setFirstName] = useState(userData?.firstName || "");
-  const [lastName, setLastName] = useState(userData?.lastName || "");
-  const [gender, setGender] = useState(userData?.gender || "");
-  const [phone, setPhone] = useState(userData?.phone || "");
-  const [profilePhoto, setProfilePhoto] = useState(userData.profilePhoto);
-  const [about, setAbout] = useState(userData?.about || "");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [gender, setGender] = useState("");
+  const [phone, setPhone] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState("");
+  const [about, setAbout] = useState("");
   const [skill, setSkill] = useState("");
-  const [skills, setSkills] = useState(userData.skills);
+  const [skills, setSkills] = useState([]);
+  const [changePassword, setChangePassword] = useState(false);
+  const [oldpassword, setOldPassword] = useState("");
+  const [newpassword, setNewPassword] = useState("");
+  const [errors, setErrors] = useState({ old: "", new: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const addSkill = (e) => {
     e.preventDefault();
@@ -34,21 +40,15 @@ const EditProfile = () => {
     setSkills(skills.filter((_, i) => i !== index));
   };
 
-  const fetchUser = async () => {
-    if (userData) return;
-    try {
-      const user = await axios.get(BASE_URL + "/profile/view", {
-        withCredentials: true,
-      });
-      dispatch(addUser(user));
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
   useEffect(() => {
-    fetchUser();
-  }, []);
+    setFirstName(userData?.firstName || "");
+    setLastName(userData?.lastName || "");
+    setGender(userData?.gender || "");
+    setPhone(userData?.phone || "");
+    setProfilePhoto(userData?.profilePhoto || "");
+    setAbout(userData?.about || "");
+    setSkills(userData?.skills || []);
+  }, [userData]);
 
   const capitalizeFirstLetter = (str) =>
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -95,6 +95,43 @@ const EditProfile = () => {
       toast.error(err.message || "Image upload failed!");
     }
     e.target.value = "";
+  };
+
+  const handleConfirmChangePassword = async () => {
+    let hasError = false;
+    const newErrors = { old: "", new: "" };
+
+    if (!oldpassword.trim()) {
+      newErrors.old = "Old password is mandatory";
+      hasError = true;
+    }
+    if (!newpassword.trim()) {
+      newErrors.new = "New password is mandatory";
+      hasError = true;
+    }
+    setErrors(newErrors);
+    if (hasError) return;
+
+    try {
+      console.log(oldpassword, newpassword);
+
+      const res = await axios.patch(
+        BASE_URL + "/profile/changePassword",
+        { oldPassword: oldpassword, newPassword: newpassword },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res);
+      toast.success("Password changed successfully!!");
+      setChangePassword(false);
+    } catch (err) {
+      console.log(err);
+      // toast.error(err.response.data.message || err.message);
+      const errorMessage =
+        err?.response?.data?.message || err.message || "Something went wrong";
+      setErrors({ old: "", new: errorMessage });
+    }
   };
 
   return (
@@ -171,7 +208,8 @@ const EditProfile = () => {
                     About
                   </label>
                   <textarea
-                    rows="3"
+                    rows="1"
+                    resize="none"
                     value={about}
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                     placeholder="Tell something about yourself..."
@@ -200,14 +238,14 @@ const EditProfile = () => {
 
                   {/* Current + newly added skills */}
                   <div className="flex flex-wrap mt-3 gap-2">
-                    {skills.map((s, i) => (
+                    {skills?.map((s, i) => (
                       <span
                         key={i}
                         className="flex items-center gap-1 bg-gray-200 text-gray-800 px-3 py-1 rounded-full">
                         {s}
                         <button
                           onClick={() => removeSkill(i)}
-                          className="ml-1 text-red-500">
+                          className="ml-1 text-red-500 cursor-pointer">
                           ×
                         </button>
                       </span>
@@ -244,8 +282,93 @@ const EditProfile = () => {
           </div>
         </div>
 
-        {/* SUBMIT/CANCEL BUTTON */}
+        {/* CHANGE PASSWORD/SUBMIT/CANCEL BUTTON */}
         <div className="flex justify-center space-x-4 pb-4">
+          <button
+            onClick={() => setChangePassword(true)}
+            className="border rounded-xl px-3 py-2 cursor-pointer hover:bg-green-500 hover:text-white">
+            Change Password
+          </button>
+          {changePassword && (
+            <div className="modal-overlay">
+              <div className="modal-contentPassword">
+                <h1 className="text-center text-2xl m-2">
+                  Confirm Change Password
+                </h1>
+                <div className="my-4">
+                  <input
+                    type="password"
+                    placeholder="Old Password"
+                    className="border p-2 rounded w-full"
+                    value={oldpassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                  />
+                  <span
+                    className="absolute right-1 top-3 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </span>
+                  {errors.old && (
+                    <p className="text-red-600 text-sm">{errors.old}</p>
+                  )}
+                </div>
+                <div className="my-4">
+                  <input
+                    type="password"
+                    placeholder="New Password"
+                    className="border p-2 rounded w-full"
+                    value={newpassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                  <span
+                    className="absolute right-1 top-3 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </span>
+                  {errors.new && (
+                    <p className="text-red-600 text-sm">{errors.new}</p>
+                  )}
+                </div>
+                <div className="flex mt-6 gap-4 text-end justify-end">
+                  <button
+                    onClick={() => {
+                      setChangePassword(false);
+                      setErrors({ old: "", new: "" });
+                      setOldPassword("");
+                      setNewPassword("");
+                    }}
+                    className="bg-indigo-600 text-white cursor-pointer px-4 py-2 rounded-lg hover:bg-indigo-700">
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleConfirmChangePassword}
+                    className="bg-red-600 text-white cursor-pointer px-4 py-2 rounded-lg hover:bg-red-700">
+                    Confirm Change
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <style>{`
+          .modal-overlay {
+              position: fixed;
+              top: 0; left: 0;
+              width: 100%; height: 100%;
+              background: rgba(0,0,0,0.5);
+              display: flex; 
+              justify-content: center; 
+              align-items: center;
+          }
+          .modal-contentPassword {
+              background: white;
+              padding: 20px;
+              border-radius: 10px;
+              width: 350px;
+              text-align: left;
+          }
+        `}</style>
+
           <button
             onClick={handleSubmit}
             className="border rounded-xl px-3 py-2 cursor-pointer hover:bg-blue-500 hover:text-white">

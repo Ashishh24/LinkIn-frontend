@@ -12,6 +12,7 @@ const Profile = () => {
   const userData = useSelector((store) => store.user);
   const [deleteProfile, setDeleteProfile] = useState(false);
   const [allPosts, setAllPosts] = useState([]);
+  const [expandPhoto, setExpandPhoto] = useState(false);
 
   useEffect(() => {
     const skillTags = document.querySelectorAll(".bg-indigo-100");
@@ -96,7 +97,8 @@ const Profile = () => {
             <div className="md:w-1/3 text-center">
               <img
                 src={userData?.profilePhoto}
-                className="rounded-full w-40 h-40 mx-auto mb-4"
+                onClick={() => setExpandPhoto(true)}
+                className="rounded-full w-40 h-40 mx-auto mb-4 cursor-pointer"
               />
               <h1 className="text-2xl font-bold text-gray-800">
                 {userData?.firstName + " " + userData?.lastName}
@@ -115,6 +117,22 @@ const Profile = () => {
                 </button>
               </div>
             </div>
+            {expandPhoto && (
+              <div className="fixed inset-0 bg-white bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={() => setExpandPhoto(false)}>
+                <button
+                  onClick={() => setExpandPhoto(false)}
+                  className="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-300 cursor-pointer">
+                  X
+                </button>
+
+                <img
+                  src={userData?.profilePhoto}
+                  alt="Profile"
+                  className="max-w-150 max-h-150 object-contain rounded-full shadow-lg"
+                />
+              </div>
+            )}
 
             {/* Right */}
             <div className="md:w-2/3 space-y-6 text-gray-800">
